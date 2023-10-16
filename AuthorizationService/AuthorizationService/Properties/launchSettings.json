@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Desktop": {
+      "commandName": "Project",
+      "launchUrl": "swagger",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "DesktopDevelopment"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:5000"
+    }
+  }
+}

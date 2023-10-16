@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AdminClient.Authorization.Registration"
+             x:Class="AdminClient.Authorization.Registration.RegistrationView">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="16">
+            <Entry Placeholder="login" HorizontalTextAlignment="Center" Text="{Binding Login}"></Entry>
+            <Entry Placeholder="email" HorizontalTextAlignment="Center" Text="{Binding Email}"></Entry>
+            <Entry Placeholder="password" HorizontalTextAlignment="Center" IsPassword="True" Text="{Binding Password}"></Entry>
+            <Button Text="register" Command="{Binding PerformLoginCommand}"></Button>
+        </VerticalStackLayout>
+    </Grid>
+</ContentView>

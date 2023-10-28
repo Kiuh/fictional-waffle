@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AdminClient.Authorization.Login
 {
-	public partial class LoginView : ContentView
+	public partial class LoginView : ContentPage
 	{
 		public LoginView()
 		{

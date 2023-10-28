@@ -1,9 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:login="clr-namespace:AdminClient.Authorization.Login"
              xmlns:registration="clr-namespace:AdminClient.Authorization.Registration"
-             x:Class="AdminClient.MainPage">
-
+             x:Class="AdminClient.Authorization.AuthorizationView"
+             Title="AuthorizationView">
+    <login:LoginView/>
     <registration:RegistrationView/>
-</ContentPage>
+</TabbedPage>

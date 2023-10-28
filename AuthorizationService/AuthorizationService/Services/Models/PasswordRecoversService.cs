@@ -1,6 +1,6 @@
-﻿using AuthorizationService.Common;
-using AuthorizationService.Data;
-using AuthorizationService.Models;
+﻿using AuthorizationApi.Database;
+using AuthorizationApi.Database.Models;
+using AuthorizationService.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 

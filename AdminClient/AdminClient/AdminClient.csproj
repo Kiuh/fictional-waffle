@@ -49,12 +49,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="6.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\AuthorizationApi\AuthorizationApi.csproj" />
+	  <ProjectReference Include="..\..\AuthorizationService\AuthorizationApi\AuthorizationApi.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -64,6 +66,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Authorization\AuthorizationView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Authorization\Login\LoginView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

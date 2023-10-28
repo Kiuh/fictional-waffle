@@ -16,7 +16,7 @@ namespace AdminClient
 		static NetworkClient()
 		{
 			client = new HttpClient();
-			client.BaseAddress = new Uri("localhost:8080");
+			client.BaseAddress = new Uri("http://google.com");
         }
 
 		public static async Task<string> GetPubkey()

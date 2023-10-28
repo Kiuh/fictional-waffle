@@ -1,6 +1,6 @@
 ﻿using AuthorizationApi;
+using AuthorizationApi.Database.Models;
 using AuthorizationService.Common;
-using AuthorizationService.Models;
 using AuthorizationService.Services;
 using AuthorizationService.Services.Mail;
 using AuthorizationService.Services.Models;

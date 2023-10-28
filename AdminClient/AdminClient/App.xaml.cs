@@ -1,4 +1,6 @@
-﻿namespace AdminClient
+﻿using AdminClient.Authorization;
+
+namespace AdminClient
 {
     public partial class App : Application
     {
@@ -6,7 +8,7 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            MainPage = new AuthorizationView();
         }
     }
 }

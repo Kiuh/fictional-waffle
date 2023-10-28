@@ -1,4 +1,5 @@
-﻿using AuthorizationApi;
+﻿using System.Net;
+using AuthorizationApi;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -12,7 +13,20 @@ namespace AdminClient.Authorization.Login
 		[ObservableProperty]
 		private string password = "";
 
-		[RelayCommand]
+		[ObservableProperty]
+		private bool loginFailed = false;
+
+		partial void OnLoginChanged(string value)
+		{
+			LoginFailed = false;
+		}
+
+		partial void OnPasswordChanged(string value)
+		{
+			LoginFailed = false;
+        }
+
+        [RelayCommand]
 		public async void PerformLogin()
 		{
 			var nonce = Random.Shared.Next().ToString();
@@ -20,6 +34,11 @@ namespace AdminClient.Authorization.Login
 
 			var login_data = new LoginDto { Nonce = nonce, Signature = signature, };
 			var res = await NetworkClient.Login(login_data);
+
+			if (res != HttpStatusCode.OK)
+			{
+				LoginFailed = true;
+			}
 		}
     }
 }

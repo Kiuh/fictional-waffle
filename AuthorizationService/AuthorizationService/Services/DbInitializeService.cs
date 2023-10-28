@@ -1,4 +1,4 @@
-﻿using AuthorizationService.Data;
+﻿using AuthorizationApi.Database;
 
 namespace AuthorizationService.Services;
 

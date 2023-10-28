@@ -1,9 +1,9 @@
 ﻿using AuthorizationService.Common;
-using AuthorizationService.Data;
-using AuthorizationService.Models;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using AuthorizationApi;
+using AuthorizationApi.Database;
+using AuthorizationApi.Database.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthorizationService.Services.Models;
 

@@ -1,5 +1,5 @@
+using AuthorizationApi.Database;
 using AuthorizationService.Controllers;
-using AuthorizationService.Data;
 using AuthorizationService.Middleware;
 using AuthorizationService.Services;
 using AuthorizationService.Services.Mail;

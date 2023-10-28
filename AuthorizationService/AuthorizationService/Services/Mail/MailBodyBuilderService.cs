@@ -1,4 +1,4 @@
-﻿using AuthorizationService.Models;
+﻿using AuthorizationApi.Database.Models;
 using Microsoft.Extensions.Options;
 
 namespace AuthorizationService.Services.Mail;

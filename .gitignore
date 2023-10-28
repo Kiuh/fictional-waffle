@@ -476,4 +476,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-./AuthorizationService/secrets.json
+AuthorizationService/secrets.json

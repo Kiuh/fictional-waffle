@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminClient", "AdminClient\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationApi", "..\AuthorizationService\AuthorizationApi\AuthorizationApi.csproj", "{0681FEE5-327F-41AF-B6D2-61432CCC7478}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoomManagerApi", "..\RoomManager\RoomManagerApi\RoomManagerApi.csproj", "{6F22A9B0-BEAB-4D07-B945-BABE9A282647}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{0681FEE5-327F-41AF-B6D2-61432CCC7478}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0681FEE5-327F-41AF-B6D2-61432CCC7478}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0681FEE5-327F-41AF-B6D2-61432CCC7478}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F22A9B0-BEAB-4D07-B945-BABE9A282647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F22A9B0-BEAB-4D07-B945-BABE9A282647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F22A9B0-BEAB-4D07-B945-BABE9A282647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F22A9B0-BEAB-4D07-B945-BABE9A282647}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

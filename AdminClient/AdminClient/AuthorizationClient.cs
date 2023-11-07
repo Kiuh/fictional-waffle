@@ -9,14 +9,14 @@ using AuthorizationApi;
 
 namespace AdminClient
 {
-    internal static class NetworkClient
+    internal static class AuthorizationClient
 	{
 		private static HttpClient client;
 
-		static NetworkClient()
+		static AuthorizationClient()
 		{
 			client = new HttpClient();
-			client.BaseAddress = new Uri("http://google.com");
+			client.BaseAddress = new Uri("");
         }
 
 		public static async Task<string> GetPubkey()

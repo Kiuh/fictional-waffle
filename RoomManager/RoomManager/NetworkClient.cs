@@ -12,10 +12,26 @@ namespace RoomManager
 			client.BaseAddress = new Uri("http://google.com");
 		}
 
-		public static RoomPartialInfoDto GetRoomPartialInfo(Uri room)
+		public static RoomPartialInfoDto TryGetRoomPartialInfo(Uri room)
 		{
 			var uri = new Uri(room, "Info");
-			var res = client.GetAsync(uri).Result;
-		}
+
+			HttpResponseMessage res = null;
+			try
+			{
+				res = client.GetAsync(uri).Result;
+            }
+			catch (Exception e)
+			{
+				return null;
+			}
+			
+			if (!res.IsSuccessStatusCode)
+			{
+				return null;
+            }
+
+			return res.Content.ReadFromJsonAsync<RoomPartialInfoDto>().Result;
+        }
 	}
 }

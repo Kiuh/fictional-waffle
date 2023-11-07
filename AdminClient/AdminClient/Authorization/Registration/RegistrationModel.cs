@@ -18,7 +18,7 @@ namespace AdminClient.Authorization.Registration
 		[RelayCommand]
 		public async void Register()
 		{
-			var pubkey = await NetworkClient.GetPubkey();
+			var pubkey = await AuthorizationClient.GetPubkey();
 			Cryptography.SetPubkey(pubkey);
 
 			var nonce = Random.Shared.Next().ToString();
@@ -36,7 +36,7 @@ namespace AdminClient.Authorization.Registration
 				EncryptedNonceWithEmail = encrypted_nonce_with_email,
 			};
 
-			var res = await NetworkClient.Register(registration_data);
+			var res = await AuthorizationClient.Register(registration_data);
 		}
 	}
 }

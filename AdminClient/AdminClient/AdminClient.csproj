@@ -57,6 +57,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\AuthorizationService\AuthorizationApi\AuthorizationApi.csproj" />
+	  <ProjectReference Include="..\..\RoomManager\RoomManagerApi\RoomManagerApi.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

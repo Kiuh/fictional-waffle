@@ -33,7 +33,7 @@ namespace AdminClient.Authorization.Login
 			var signature = Cryptography.GetLoginSignature(Login, Password, nonce);
 
 			var login_data = new LoginDto { Nonce = nonce, Signature = signature, };
-			var res = await NetworkClient.Login(login_data);
+			var res = await AuthorizationClient.Login(login_data);
 
 			if (res != HttpStatusCode.OK)
 			{

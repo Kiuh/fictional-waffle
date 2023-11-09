@@ -11,15 +11,11 @@ using UnityEngine.UIElements;
 public class NetworkManagerHud : MonoBehaviour
 {
     private NetworkManager m_NetworkManager;
-
-    [SerializeField]
     private UnityTransport m_Transport;
 
     // This is needed to make the port field more convenient. GUILayout.TextField is very limited and we want to be able to clear the field entirely so we can't cache this as ushort.
-    private string m_PortString = "10000";
+    private string m_PortString = "7777";
     private string m_ConnectAddress = "127.0.0.1";
-
-    public void StartDockerServer(string udpPort, string httpPort) { }
 
     [SerializeField]
     private UIDocument m_MainMenuUIDocument;
@@ -62,14 +58,16 @@ public class NetworkManagerHud : MonoBehaviour
         m_ServerButton.clickable.clickedWithEventInfo += ServerButtonClicked;
         m_ClientButton.clickable.clickedWithEventInfo += ClientButtonClicked;
         m_ShutdownButton.clickable.clickedWithEventInfo += ShutdownButtonClicked;
-
-        ShowMainMenuUI(true);
-        ShowInGameUI(false);
-        ShowStatusText(false);
     }
 
     private void Start()
     {
+        m_Transport = (UnityTransport)m_NetworkManager.NetworkConfig.NetworkTransport;
+
+        ShowMainMenuUI(true);
+        ShowInGameUI(false);
+        ShowStatusText(false);
+
         NetworkManager.Singleton.OnClientConnectedCallback += OnOnClientConnectedCallback;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnOnClientDisconnectCallback;
     }
@@ -96,17 +94,10 @@ public class NetworkManagerHud : MonoBehaviour
         return networkManager.IsServer || networkManager.IsClient;
     }
 
-    public bool SetConnectionData()
+    private bool SetConnectionData()
     {
-        if (!ServerManager.isDocker)
-        {
-            m_ConnectAddress = SanitizeInput(m_IPAddressField.value);
-            m_PortString = SanitizeInput(m_PortField.value);
-        }
-        else
-        {
-            m_ConnectAddress = "0.0.0.0";
-        }
+        m_ConnectAddress = SanitizeInput(m_IPAddressField.value);
+        m_PortString = SanitizeInput(m_PortField.value);
 
         if (m_ConnectAddress == "")
         {
@@ -124,15 +115,12 @@ public class NetworkManagerHud : MonoBehaviour
             return false;
         }
 
-        Debug.Log($"m_PortString: {m_PortString}");
         if (ushort.TryParse(m_PortString, out ushort port))
         {
-            Debug.Log($"Try set address: {m_ConnectAddress} and port: {port}");
             m_Transport.SetConnectionData(m_ConnectAddress, port);
         }
         else
         {
-            Debug.Log($"Try set address: {m_ConnectAddress} and port: {7777}");
             m_Transport.SetConnectionData(m_ConnectAddress, 7777);
         }
         return true;
@@ -162,25 +150,23 @@ public class NetworkManagerHud : MonoBehaviour
         }
     }
 
-    public void ServerButtonClicked(EventBase obj)
-    {
-        StartServer();
-    }
-
-    public void StartServer()
+    private void ServerButtonClicked(EventBase obj)
     {
         if (SetConnectionData())
         {
-            bool success = m_NetworkManager.StartServer();
-            Debug.Log($"Server started: {success}");
-            Debug.Log($"ACTIVE ON PORT: {m_Transport.ConnectionData.Port}");
-            Debug.Log($"ACTIVE ON Address: {m_Transport.ConnectionData.Address}");
-            Debug.Log(
-                $"ACTIVE ON ServerListenAddress: {m_Transport.ConnectionData.ServerListenAddress}"
-            );
+            _ = m_NetworkManager.StartServer();
             ShowMainMenuUI(false);
             ShowInGameUI(true);
         }
+    }
+
+    public bool StartDockerServer(string address, ushort port)
+    {
+        m_Transport.SetConnectionData(address, port, "0.0.0.0");
+        bool result = m_NetworkManager.StartServer();
+        ShowMainMenuUI(false);
+        ShowInGameUI(true);
+        return result;
     }
 
     private void ShutdownButtonClicked(EventBase obj)

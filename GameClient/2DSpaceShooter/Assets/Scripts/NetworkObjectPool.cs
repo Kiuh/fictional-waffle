@@ -5,18 +5,15 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-
 public class NetworkObjectPool : MonoBehaviour
 {
     [SerializeField]
-    NetworkManager m_NetworkManager;
+    private NetworkManager m_NetworkManager;
 
     [SerializeField]
-    List<PoolConfigObject> PooledPrefabsList;
-
-    HashSet<GameObject> prefabs = new HashSet<GameObject>();
-
-    Dictionary<GameObject, Queue<NetworkObject>> pooledObjects = new Dictionary<GameObject, Queue<NetworkObject>>();
+    private List<PoolConfigObject> PooledPrefabsList;
+    private HashSet<GameObject> prefabs = new();
+    private Dictionary<GameObject, Queue<NetworkObject>> pooledObjects = new();
 
     public void Awake()
     {
@@ -25,12 +22,15 @@ public class NetworkObjectPool : MonoBehaviour
 
     public void OnValidate()
     {
-        for (var i = 0; i < PooledPrefabsList.Count; i++)
+        for (int i = 0; i < PooledPrefabsList.Count; i++)
         {
-            var prefab = PooledPrefabsList[i].Prefab;
+            GameObject prefab = PooledPrefabsList[i].Prefab;
             if (prefab != null)
             {
-                Assert.IsNotNull(prefab.GetComponent<NetworkObject>(), $"{nameof(NetworkObjectPool)}: Pooled prefab \"{prefab.name}\" at index {i.ToString()} has no {nameof(NetworkObject)} component.");
+                Assert.IsNotNull(
+                    prefab.GetComponent<NetworkObject>(),
+                    $"{nameof(NetworkObjectPool)}: Pooled prefab \"{prefab.name}\" at index {i} has no {nameof(NetworkObject)} component."
+                );
             }
         }
     }
@@ -62,7 +62,7 @@ public class NetworkObjectPool : MonoBehaviour
     /// </summary>
     public void ReturnNetworkObject(NetworkObject networkObject, GameObject prefab)
     {
-        var go = networkObject.gameObject;
+        GameObject go = networkObject.gameObject;
 
         // In this simple example pool we just disable objects while they are in the pool. But we could call a function on the object here for more flexibility.
         go.SetActive(false);
@@ -77,10 +77,16 @@ public class NetworkObjectPool : MonoBehaviour
     /// <param name="prewarmCount"></param>
     public void AddPrefab(GameObject prefab, int prewarmCount = 0)
     {
-        var networkObject = prefab.GetComponent<NetworkObject>();
+        NetworkObject networkObject = prefab.GetComponent<NetworkObject>();
 
-        Assert.IsNotNull(networkObject, $"{nameof(prefab)} must have {nameof(networkObject)} component.");
-        Assert.IsFalse(prefabs.Contains(prefab), $"Prefab {prefab.name} is already registered in the pool.");
+        Assert.IsNotNull(
+            networkObject,
+            $"{nameof(prefab)} must have {nameof(networkObject)} component."
+        );
+        Assert.IsFalse(
+            prefabs.Contains(prefab),
+            $"Prefab {prefab.name} is already registered in the pool."
+        );
 
         RegisterPrefabInternal(prefab, prewarmCount);
     }
@@ -90,19 +96,22 @@ public class NetworkObjectPool : MonoBehaviour
     /// </summary>
     private void RegisterPrefabInternal(GameObject prefab, int prewarmCount)
     {
-        prefabs.Add(prefab);
+        _ = prefabs.Add(prefab);
 
-        var prefabQueue = new Queue<NetworkObject>();
+        Queue<NetworkObject> prefabQueue = new();
         pooledObjects[prefab] = prefabQueue;
 
         for (int i = 0; i < prewarmCount; i++)
         {
-            var go = CreateInstance(prefab);
+            GameObject go = CreateInstance(prefab);
             ReturnNetworkObject(go.GetComponent<NetworkObject>(), prefab);
         }
 
         // Register Netcode Spawn handlers
-        m_NetworkManager.PrefabHandler.AddHandler(prefab, new DummyPrefabInstanceHandler(prefab, this));
+        _ = m_NetworkManager.PrefabHandler.AddHandler(
+            prefab,
+            new DummyPrefabInstanceHandler(prefab, this)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -118,9 +127,13 @@ public class NetworkObjectPool : MonoBehaviour
     /// <param name="position"></param>
     /// <param name="rotation"></param>
     /// <returns></returns>
-    private NetworkObject GetNetworkObjectInternal(GameObject prefab, Vector3 position, Quaternion rotation)
+    private NetworkObject GetNetworkObjectInternal(
+        GameObject prefab,
+        Vector3 position,
+        Quaternion rotation
+    )
     {
-        var queue = pooledObjects[prefab];
+        Queue<NetworkObject> queue = pooledObjects[prefab];
 
         NetworkObject networkObject;
         if (queue.Count > 0)
@@ -133,7 +146,7 @@ public class NetworkObjectPool : MonoBehaviour
         }
 
         // Here we must reverse the logic in ReturnNetworkObject.
-        var go = networkObject.gameObject;
+        GameObject go = networkObject.gameObject;
         go.transform.SetParent(null);
         go.SetActive(true);
 
@@ -148,7 +161,7 @@ public class NetworkObjectPool : MonoBehaviour
     /// </summary>
     private void InitializePool()
     {
-        foreach (var configObject in PooledPrefabsList)
+        foreach (PoolConfigObject configObject in PooledPrefabsList)
         {
             RegisterPrefabInternal(configObject.Prefab, configObject.PrewarmCount);
         }
@@ -156,16 +169,16 @@ public class NetworkObjectPool : MonoBehaviour
 }
 
 [Serializable]
-struct PoolConfigObject
+internal struct PoolConfigObject
 {
     public GameObject Prefab;
     public int PrewarmCount;
 }
 
-class DummyPrefabInstanceHandler : INetworkPrefabInstanceHandler
+internal class DummyPrefabInstanceHandler : INetworkPrefabInstanceHandler
 {
-    GameObject m_Prefab;
-    NetworkObjectPool m_Pool;
+    private GameObject m_Prefab;
+    private NetworkObjectPool m_Pool;
 
     public DummyPrefabInstanceHandler(GameObject prefab, NetworkObjectPool pool)
     {

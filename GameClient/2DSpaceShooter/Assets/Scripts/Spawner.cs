@@ -1,162 +1,154 @@
-﻿using Unity.Netcode;
+﻿using Newtonsoft.Json;
+using Unity.Netcode;
 using UnityEngine;
+
+public class ObstaclesHolder
+{
+    public int[] Obstacles;
+}
 
 public class Spawner : MonoBehaviour
 {
     [SerializeField]
-    NetworkObjectPool m_ObjectPool;
-    
-    [SerializeField]
-    private int m_Amount = 4;
+    private NetworkObjectPool objectPool;
 
     [SerializeField]
-    private GameObject m_PowerupPrefab;
+    private int asteroidAmount = 4;
+
     [SerializeField]
-    private GameObject m_AsteroidPrefab;
+    private GameObject powerupPrefab;
+
     [SerializeField]
-    private GameObject m_ObstaclePrefab;
-    [SerializeField] 
-    private GameObject m_ObstaclePrefab2;
-    [SerializeField] 
-    private GameObject m_ObstaclePrefab3;
-    [SerializeField] 
-    private GameObject m_ObstacleCornerPrefab;
-    
-    // to easily visualize, search for "0". Blocks are spawned as shown below, but flipped horizontally. 
-    static int[] s_Obstacles = new int[]
+    private GameObject asteroidPrefab;
+
+    [SerializeField]
+    private GameObject obstaclePrefab1;
+
+    [SerializeField]
+    private GameObject obstaclePrefab2;
+
+    [SerializeField]
+    private GameObject obstaclePrefab3;
+
+    [SerializeField]
+    private GameObject obstacleCornerPrefab;
+
+    // to easily visualize, search for "0". Blocks are spawned as shown below, but flipped horizontally.
+    private static int[] obstacles = new int[] { };
+
+    private void Awake()
     {
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 2,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0,
-        0, 0, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0,
-        0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0,
-        0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 2, 1, 4, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 4, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 2, 0, 2, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 2, 1, 1, 1, 1, 4, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-    };
+        TextAsset file = Resources.Load("Map") as TextAsset;
+        ObstaclesHolder list = JsonConvert.DeserializeObject<ObstaclesHolder>(file.text);
+        obstacles = list.Obstacles;
+    }
 
-    void Start()
+    private void Start()
     {
         SpawnObstacles();
     }
 
-    void SpawnAsteroids()
+    private void SpawnAsteroids()
     {
-        for (int i = 0; i < m_Amount; i++)
+        for (int i = 0; i < asteroidAmount; i++)
         {
-            GameObject go = m_ObjectPool.GetNetworkObject(m_AsteroidPrefab).gameObject;
+            GameObject go = objectPool.GetNetworkObject(asteroidPrefab).gameObject;
             go.transform.position = new Vector3(Random.Range(-40, 40), Random.Range(-40, 40));
 
             go.transform.localScale = new Vector3(4, 4, 4);
 
-            var asteroid = go.GetComponent<Asteroid>();
+            Asteroid asteroid = go.GetComponent<Asteroid>();
             asteroid.Size = new NetworkVariable<int>(4);
 
             float dx = Random.Range(-40, 40) / 10.0f;
             float dy = Random.Range(-40, 40) / 10.0f;
             float dir = Random.Range(-40, 40);
             go.transform.rotation = Quaternion.Euler(0, 0, dir);
-            var rigidbody2D = go.GetComponent<Rigidbody2D>();
+            Rigidbody2D rigidbody2D = go.GetComponent<Rigidbody2D>();
             rigidbody2D.angularVelocity = dir;
             rigidbody2D.velocity = new Vector2(dx, dy);
-            asteroid.asteroidPrefab = m_AsteroidPrefab;
+            asteroid.asteroidPrefab = asteroidPrefab;
             asteroid.NetworkObject.Spawn(true);
         }
     }
-    
-    void SpawnObstacles()
+
+    private void SpawnObstacles()
     {
         // Obstacles are not networked we just spawn them as static objects on each peer
-        
         int y = 0;
         int x = 0;
-        for (int i = 0; i < s_Obstacles.Length; i++)
+        for (int i = 0; i < obstacles.Length; i++)
         {
-            if (s_Obstacles[i] == 1)
+            if (obstacles[i] == 1)
             {
-                Instantiate(m_ObstaclePrefab, new Vector3(-40 + x * 2, -40 + y * 2, 0), Quaternion.identity);
+                _ = Instantiate(
+                    obstaclePrefab1,
+                    new Vector3(-40 + (x * 2), -40 + (y * 2), 0),
+                    Quaternion.identity
+                );
             }
-            
-            if (s_Obstacles[i] == 2)
+
+            if (obstacles[i] == 2)
             {
-                Instantiate(m_ObstacleCornerPrefab, new Vector3(-40 + x * 2, -40 + y * 2, 0), Quaternion.identity);
+                _ = Instantiate(
+                    obstacleCornerPrefab,
+                    new Vector3(-40 + (x * 2), -40 + (y * 2), 0),
+                    Quaternion.identity
+                );
             }
-            
-            if (s_Obstacles[i] == 3)
+
+            if (obstacles[i] == 3)
             {
-                Instantiate(m_ObstaclePrefab2, new Vector3(-40 + x * 2, -40 + y * 2, 0), Quaternion.identity);
+                _ = Instantiate(
+                    obstaclePrefab2,
+                    new Vector3(-40 + (x * 2), -40 + (y * 2), 0),
+                    Quaternion.identity
+                );
             }
-            
-            if (s_Obstacles[i] == 4)
+
+            if (obstacles[i] == 4)
             {
-                Instantiate(m_ObstaclePrefab3, new Vector3(-40 + x * 2, -40 + y * 2, 0), Quaternion.identity);
+                _ = Instantiate(
+                    obstaclePrefab3,
+                    new Vector3(-40 + (x * 2), -40 + (y * 2), 0),
+                    Quaternion.identity
+                );
             }
 
             if (i % 40 == 0)
             {
-                y = y + 1;
+                y++;
                 x = 0;
             }
             else
             {
-                x = x + 1;
+                x++;
             }
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (!NetworkManager.Singleton.IsServer)
         {
             return;
         }
 
-        if (Powerup.numPowerUps < m_Amount * 4)
+        if (Powerup.NumPowerUps < asteroidAmount * 4)
         {
-            Vector3 pos = new Vector3(Random.Range(-40, 40), Random.Range(-40, 40), 0);
-            var hits = Physics2D.OverlapCircleAll(pos, 2.0f);
+            Vector3 pos = new(Random.Range(-40, 40), Random.Range(-40, 40), 0);
+            Collider2D[] hits = Physics2D.OverlapCircleAll(pos, 2.0f);
             while (hits.Length > 0)
             {
                 pos = new Vector3(Random.Range(-40, 40), Random.Range(-40, 40), 0);
                 hits = Physics2D.OverlapCircleAll(pos, 2.0f);
             }
 
-            GameObject powerUp = m_ObjectPool.GetNetworkObject(m_PowerupPrefab).gameObject;
+            GameObject powerUp = objectPool.GetNetworkObject(powerupPrefab).gameObject;
             powerUp.transform.position = pos;
             powerUp.GetComponent<NetworkObject>().Spawn(true);
-            powerUp.GetComponent<Powerup>().buffType.Value = (Buff.BuffType)Random.Range(0, (int)Buff.BuffType.Last);
+            powerUp.GetComponent<Powerup>().BuffType.Value = (Buff.BuffType)
+                Random.Range(0, (int)Buff.BuffType.Last);
         }
 
         if (Asteroid.numAsteroids == 0)

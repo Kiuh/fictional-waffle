@@ -5,17 +5,15 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(NetworkManager))]
-public class RandomPositionPlayerSpawner: MonoBehaviour
+public class RandomPositionPlayerSpawner : MonoBehaviour
 {
-    NetworkManager m_NetworkManager;
+    private int m_RoundRobinIndex = 0;
 
-    int m_RoundRobinIndex = 0;
-    
     [SerializeField]
-    SpawnMethod m_SpawnMethod;
-    
+    private SpawnMethod m_SpawnMethod;
+
     [SerializeField]
-    List<Vector3> m_SpawnPositions = new List<Vector3>() { Vector3.zero };
+    private List<Vector3> m_SpawnPositions = new() { Vector3.zero };
 
     /// <summary>
     /// Get a spawn position for a spawned object based on the spawn method.
@@ -27,7 +25,7 @@ public class RandomPositionPlayerSpawner: MonoBehaviour
         switch (m_SpawnMethod)
         {
             case SpawnMethod.Random:
-                var index = Random.Range(0, m_SpawnPositions.Count);
+                int index = Random.Range(0, m_SpawnPositions.Count);
                 return m_SpawnPositions[index];
             case SpawnMethod.RoundRobin:
                 m_RoundRobinIndex = (m_RoundRobinIndex + 1) % m_SpawnPositions.Count;
@@ -36,14 +34,17 @@ public class RandomPositionPlayerSpawner: MonoBehaviour
                 throw new NotImplementedException();
         }
     }
-    
+
     private void Awake()
     {
-        var networkManager = gameObject.GetComponent<NetworkManager>();
+        NetworkManager networkManager = gameObject.GetComponent<NetworkManager>();
         networkManager.ConnectionApprovalCallback += ConnectionApprovalWithRandomSpawnPos;
     }
 
-    void ConnectionApprovalWithRandomSpawnPos(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
+    private void ConnectionApprovalWithRandomSpawnPos(
+        NetworkManager.ConnectionApprovalRequest request,
+        NetworkManager.ConnectionApprovalResponse response
+    )
     {
         // Here we are only using ConnectionApproval to set the player's spawn position. Connections are always approved.
         response.CreatePlayerObject = true;
@@ -53,7 +54,7 @@ public class RandomPositionPlayerSpawner: MonoBehaviour
     }
 }
 
-enum SpawnMethod
+internal enum SpawnMethod
 {
     Random = 0,
     RoundRobin = 1,

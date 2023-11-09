@@ -1,12 +1,11 @@
-﻿using System;
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 public class Bullet : NetworkBehaviour
 {
-    bool m_Bounce;
-    int m_Damage = 5;
-    ShipControl m_Owner;
+    private bool m_Bounce;
+    private int m_Damage = 5;
+    private ShipControl m_Owner;
 
     public GameObject explosionParticle;
 
@@ -25,7 +24,11 @@ public class Bullet : NetworkBehaviour
     public override void OnNetworkDespawn()
     {
         // This is inefficient, the explosion object could be pooled.
-        GameObject ex = Instantiate(explosionParticle, transform.position + new Vector3(0, 0, -2), Quaternion.identity);
+        _ = Instantiate(
+            explosionParticle,
+            transform.position + new Vector3(0, 0, -2),
+            Quaternion.identity
+        );
     }
 
     private void DestroyBullet()
@@ -42,44 +45,47 @@ public class Bullet : NetworkBehaviour
     {
         if (IsServer)
         {
-            var bulletRb = GetComponent<Rigidbody2D>();
+            Rigidbody2D bulletRb = GetComponent<Rigidbody2D>();
             bulletRb.velocity = velocity;
             SetVelocityClientRpc(velocity);
         }
     }
 
     [ClientRpc]
-    void SetVelocityClientRpc(Vector2 velocity)
+    private void SetVelocityClientRpc(Vector2 velocity)
     {
         if (!IsHost)
         {
-            var bulletRb = GetComponent<Rigidbody2D>();
+            Rigidbody2D bulletRb = GetComponent<Rigidbody2D>();
             bulletRb.velocity = velocity;
         }
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        var otherObject = other.gameObject;
+        GameObject otherObject = other.gameObject;
 
         if (!NetworkManager.Singleton.IsServer || !NetworkObject.IsSpawned)
         {
             return;
         }
 
-        if (otherObject.TryGetComponent<Asteroid>(out var asteroid))
+        if (otherObject.TryGetComponent<Asteroid>(out Asteroid asteroid))
         {
             asteroid.Explode();
             DestroyBullet();
             return;
         }
 
-        if (m_Bounce == false && (otherObject.CompareTag("Wall") || otherObject.CompareTag("Obstacle")))
+        if (
+            m_Bounce == false
+            && (otherObject.CompareTag("Wall") || otherObject.CompareTag("Obstacle"))
+        )
         {
             DestroyBullet();
         }
 
-        if (otherObject.TryGetComponent<ShipControl>(out var shipControl))
+        if (otherObject.TryGetComponent<ShipControl>(out ShipControl shipControl))
         {
             if (shipControl != m_Owner)
             {

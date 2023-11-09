@@ -5,19 +5,19 @@ using UnityEngine;
 
 public class HttpServer : MonoBehaviour
 {
-    private HttpListener _httpListener;
+    private HttpListener httpListener;
 
-    private void Start()
+    public void StartHttpServer(string httpPort)
     {
-        _httpListener = new HttpListener();
-        _httpListener.Prefixes.Add($"http://*:{ServerManager.httpPort}/");
-        _httpListener.Start();
-        _ = _httpListener.BeginGetContext(new AsyncCallback(OnGetCallback), null);
+        httpListener = new HttpListener();
+        httpListener.Prefixes.Add($"http://*:{httpPort}/");
+        httpListener.Start();
+        _ = httpListener.BeginGetContext(new AsyncCallback(OnGetCallback), null);
     }
 
     private void OnGetCallback(IAsyncResult result)
     {
-        HttpListenerContext context = _httpListener.EndGetContext(result);
+        HttpListenerContext context = httpListener.EndGetContext(result);
         HttpListenerResponse response = context.Response;
         HttpListenerRequest request = context.Request;
 
@@ -27,23 +27,23 @@ public class HttpServer : MonoBehaviour
         context.Response.Headers.Clear();
         try
         {
-            CreateResponse(response, new NetworkAnswer() { status = 200 });
+            CreateResponse(response, new NetworkAnswer() { Status = 200 });
         }
         catch (Exception e)
         {
             CreateErrorResponse(response, e.Message);
         }
-        if (_httpListener.IsListening)
+        if (httpListener.IsListening)
         {
-            _ = _httpListener.BeginGetContext(new AsyncCallback(OnGetCallback), null);
+            _ = httpListener.BeginGetContext(new AsyncCallback(OnGetCallback), null);
         }
     }
 
     private async void CreateResponse(HttpListenerResponse response, NetworkAnswer data = default)
     {
         response.SendChunked = false;
-        response.StatusCode = data.status;
-        response.StatusDescription = data.status == 200 ? "OK" : "Internal Server Error";
+        response.StatusCode = data.Status;
+        response.StatusDescription = data.Status == 200 ? "OK" : "Internal Server Error";
         using (StreamWriter writer = new(response.OutputStream, response.ContentEncoding))
         {
             await writer.WriteAsync(JsonUtility.ToJson(data));
@@ -59,7 +59,7 @@ public class HttpServer : MonoBehaviour
         using (StreamWriter writer = new(response.OutputStream, response.ContentEncoding))
         {
             await writer.WriteAsync(
-                JsonUtility.ToJson(new NetworkAnswer() { status = 500, errorMessage = error })
+                JsonUtility.ToJson(new NetworkAnswer() { Status = 500, ErrorMessage = error })
             );
         }
         response.Close();
@@ -68,7 +68,7 @@ public class HttpServer : MonoBehaviour
 
 public class NetworkAnswer
 {
-    public int status = 200;
-    public string errorMessage = "No Error";
-    public object data = "Sample data";
+    public int Status = 200;
+    public string ErrorMessage = "No Error";
+    public object Data = "Sample data";
 }

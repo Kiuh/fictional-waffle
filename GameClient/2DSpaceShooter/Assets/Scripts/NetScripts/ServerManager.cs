@@ -4,11 +4,11 @@ using System.Linq;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ServerManager : MonoBehaviour
 {
-    [SerializeField]
-    private ServerStarter serverStarter;
+    public static ServerManager Instance { get; private set; }
 
     [SerializeField]
     private HttpServer httpServer;
@@ -17,6 +17,18 @@ public class ServerManager : MonoBehaviour
     private UnityTransport transport;
     public static ushort UdpPort = 7878;
     public static ushort HttpPort = 9999;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -41,11 +53,21 @@ public class ServerManager : MonoBehaviour
 
         UdpPort = ushort.Parse(arguments[0]);
         HttpPort = ushort.Parse(arguments[1]);
-        bool result = serverStarter.StartDockerServer("127.0.0.1", UdpPort);
+        bool result = StartDockerServer("127.0.0.1", UdpPort);
         Debug.Log($"Is Server: {NetworkManager.Singleton.IsServer}");
         Debug.Log(
             $"{transport.Protocol} server runed: {result} on {transport.ConnectionData.Address}:{transport.ConnectionData.Port}"
         );
         httpServer.StartHttpServer(Convert.ToString(HttpPort));
+    }
+
+    public bool StartDockerServer(string address, ushort port)
+    {
+        NetworkManager.Singleton
+            .GetComponent<UnityTransport>()
+            .SetConnectionData(address, port, "0.0.0.0");
+        bool result = NetworkManager.Singleton.StartServer();
+        _ = NetworkManager.Singleton.SceneManager.LoadScene("network", LoadSceneMode.Single);
+        return result;
     }
 }

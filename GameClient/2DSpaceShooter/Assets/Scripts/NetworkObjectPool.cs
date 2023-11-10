@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 public class NetworkObjectPool : MonoBehaviour
 {
-    [SerializeField]
-    private NetworkManager m_NetworkManager;
-
     [SerializeField]
     private List<PoolConfigObject> PooledPrefabsList;
     private HashSet<GameObject> prefabs = new();
@@ -20,46 +16,16 @@ public class NetworkObjectPool : MonoBehaviour
         InitializePool();
     }
 
-    public void OnValidate()
-    {
-        for (int i = 0; i < PooledPrefabsList.Count; i++)
-        {
-            GameObject prefab = PooledPrefabsList[i].Prefab;
-            if (prefab != null)
-            {
-                Assert.IsNotNull(
-                    prefab.GetComponent<NetworkObject>(),
-                    $"{nameof(NetworkObjectPool)}: Pooled prefab \"{prefab.name}\" at index {i} has no {nameof(NetworkObject)} component."
-                );
-            }
-        }
-    }
-
-    /// <summary>
-    /// Gets an instance of the given prefab from the pool. The prefab must be registered to the pool.
-    /// </summary>
-    /// <param name="prefab"></param>
-    /// <returns></returns>
     public NetworkObject GetNetworkObject(GameObject prefab)
     {
         return GetNetworkObjectInternal(prefab, Vector3.zero, Quaternion.identity);
     }
 
-    /// <summary>
-    /// Gets an instance of the given prefab from the pool. The prefab must be registered to the pool.
-    /// </summary>
-    /// <param name="prefab"></param>
-    /// <param name="position">The position to spawn the object at.</param>
-    /// <param name="rotation">The rotation to spawn the object with.</param>
-    /// <returns></returns>
     public NetworkObject GetNetworkObject(GameObject prefab, Vector3 position, Quaternion rotation)
     {
         return GetNetworkObjectInternal(prefab, position, rotation);
     }
 
-    /// <summary>
-    /// Return an object to the pool (and reset them).
-    /// </summary>
     public void ReturnNetworkObject(NetworkObject networkObject, GameObject prefab)
     {
         GameObject go = networkObject.gameObject;
@@ -70,30 +36,6 @@ public class NetworkObjectPool : MonoBehaviour
         pooledObjects[prefab].Enqueue(networkObject);
     }
 
-    /// <summary>
-    /// Adds a prefab to the list of spawnable prefabs.
-    /// </summary>
-    /// <param name="prefab">The prefab to add.</param>
-    /// <param name="prewarmCount"></param>
-    public void AddPrefab(GameObject prefab, int prewarmCount = 0)
-    {
-        NetworkObject networkObject = prefab.GetComponent<NetworkObject>();
-
-        Assert.IsNotNull(
-            networkObject,
-            $"{nameof(prefab)} must have {nameof(networkObject)} component."
-        );
-        Assert.IsFalse(
-            prefabs.Contains(prefab),
-            $"Prefab {prefab.name} is already registered in the pool."
-        );
-
-        RegisterPrefabInternal(prefab, prewarmCount);
-    }
-
-    /// <summary>
-    /// Builds up the cache for a prefab.
-    /// </summary>
     private void RegisterPrefabInternal(GameObject prefab, int prewarmCount)
     {
         _ = prefabs.Add(prefab);
@@ -107,8 +49,7 @@ public class NetworkObjectPool : MonoBehaviour
             ReturnNetworkObject(go.GetComponent<NetworkObject>(), prefab);
         }
 
-        // Register Netcode Spawn handlers
-        _ = m_NetworkManager.PrefabHandler.AddHandler(
+        _ = NetworkManager.Singleton.PrefabHandler.AddHandler(
             prefab,
             new DummyPrefabInstanceHandler(prefab, this)
         );
@@ -120,13 +61,6 @@ public class NetworkObjectPool : MonoBehaviour
         return Instantiate(prefab);
     }
 
-    /// <summary>
-    /// This matches the signature of <see cref="NetworkSpawnManager.SpawnHandlerDelegate"/>
-    /// </summary>
-    /// <param name="prefabHash"></param>
-    /// <param name="position"></param>
-    /// <param name="rotation"></param>
-    /// <returns></returns>
     private NetworkObject GetNetworkObjectInternal(
         GameObject prefab,
         Vector3 position,
@@ -156,9 +90,6 @@ public class NetworkObjectPool : MonoBehaviour
         return networkObject;
     }
 
-    /// <summary>
-    /// Registers all objects in <see cref="PooledPrefabsList"/> to the cache.
-    /// </summary>
     private void InitializePool()
     {
         foreach (PoolConfigObject configObject in PooledPrefabsList)

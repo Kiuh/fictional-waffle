@@ -4,7 +4,6 @@ using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(NetworkManager))]
 public class RandomPositionPlayerSpawner : MonoBehaviour
 {
     private int m_RoundRobinIndex = 0;
@@ -15,11 +14,6 @@ public class RandomPositionPlayerSpawner : MonoBehaviour
     [SerializeField]
     private List<Vector3> m_SpawnPositions = new() { Vector3.zero };
 
-    /// <summary>
-    /// Get a spawn position for a spawned object based on the spawn method.
-    /// </summary>
-    /// <returns>?The spawn position.</returns>
-    /// <exception cref="NotImplementedException"></exception>
     public Vector3 GetNextSpawnPosition()
     {
         switch (m_SpawnMethod)
@@ -37,8 +31,7 @@ public class RandomPositionPlayerSpawner : MonoBehaviour
 
     private void Awake()
     {
-        NetworkManager networkManager = gameObject.GetComponent<NetworkManager>();
-        networkManager.ConnectionApprovalCallback += ConnectionApprovalWithRandomSpawnPos;
+        NetworkManager.Singleton.ConnectionApprovalCallback += ConnectionApprovalWithRandomSpawnPos;
     }
 
     private void ConnectionApprovalWithRandomSpawnPos(

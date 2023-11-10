@@ -8,7 +8,7 @@ using UnityEngine;
 public class ServerManager : MonoBehaviour
 {
     [SerializeField]
-    private NetworkManagerHud managerHud;
+    private ServerStarter serverStarter;
 
     [SerializeField]
     private HttpServer httpServer;
@@ -20,7 +20,6 @@ public class ServerManager : MonoBehaviour
 
     private void Start()
     {
-#if UNITY_SERVER
         Debug.Log(
             "Command Line Args: "
                 + Environment.GetCommandLineArgs().Aggregate("", (x, y) => x + " " + y)
@@ -42,12 +41,11 @@ public class ServerManager : MonoBehaviour
 
         UdpPort = ushort.Parse(arguments[0]);
         HttpPort = ushort.Parse(arguments[1]);
-        bool result = managerHud.StartDockerServer("127.0.0.1", UdpPort);
+        bool result = serverStarter.StartDockerServer("127.0.0.1", UdpPort);
         Debug.Log($"Is Server: {NetworkManager.Singleton.IsServer}");
         Debug.Log(
             $"{transport.Protocol} server runed: {result} on {transport.ConnectionData.Address}:{transport.ConnectionData.Port}"
         );
         httpServer.StartHttpServer(Convert.ToString(HttpPort));
-#endif
     }
 }

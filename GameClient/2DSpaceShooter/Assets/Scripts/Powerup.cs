@@ -1,12 +1,12 @@
-﻿using Unity.Netcode;
+﻿using TMPro;
+using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Powerup : NetworkBehaviour
 {
     public static int NumPowerUps = 0;
 
-    public NetworkVariable<Buff.BuffType> BuffType = new();
+    public NetworkVariable<Buff.BuffType> BuffType = new(Buff.BuffType.Speed);
 
     [SerializeField]
     private Renderer powerUpGlow;
@@ -15,26 +15,7 @@ public class Powerup : NetworkBehaviour
     private Renderer powerUpGlow2;
 
     [SerializeField]
-    private UIDocument m_PowerUpUIDocument;
-    private VisualElement m_PowerUpRootVisualElement;
-    private VisualElement m_PowerUpUIWrapper;
-    private TextElement m_PowerUpLabel;
-    private Camera m_MainCamera;
-
-    private IPanel m_Panel;
-
-    private void Awake()
-    {
-        m_MainCamera = Camera.main;
-    }
-
-    private void OnEnable()
-    {
-        m_PowerUpRootVisualElement = m_PowerUpUIDocument.rootVisualElement;
-        m_PowerUpUIWrapper = m_PowerUpRootVisualElement.Q<VisualElement>("PowerUpUIBox");
-        m_PowerUpLabel = m_PowerUpRootVisualElement.Q<TextElement>("PowerUpLabel");
-        m_Panel = m_PowerUpUIWrapper.panel;
-    }
+    private TMP_Text label;
 
     public override void OnNetworkSpawn()
     {
@@ -59,10 +40,6 @@ public class Powerup : NetworkBehaviour
 
     private void OnStartClient()
     {
-        float dir = -70.0f;
-        transform.rotation = Quaternion.Euler(0, 180, dir);
-        GetComponent<Rigidbody2D>().angularVelocity = dir;
-
         if (!IsServer)
         {
             NumPowerUps += 1;
@@ -88,32 +65,14 @@ public class Powerup : NetworkBehaviour
         powerUpGlow2.material.SetColor("_Color", buffColor);
         powerUpGlow2.material.SetColor("_EmissiveColor", buffColor);
 
-        m_PowerUpLabel.text = buffType.ToString().ToUpper();
+        label.text = buffType.ToString().ToUpper();
 
         if (buffType == Buff.BuffType.QuadDamage)
         {
-            m_PowerUpLabel.text = "Quad Damage";
+            label.text = "Quad Damage";
         }
 
-        m_PowerUpLabel.style.color = buffColor;
-    }
-
-    private void LateUpdate()
-    {
-        SetLabelPosition();
-    }
-
-    private void SetLabelPosition()
-    {
-        if (m_Panel != null)
-        {
-            Vector2 screenPosition = RuntimePanelUtils.CameraTransformWorldToPanel(
-                m_Panel,
-                transform.position,
-                m_MainCamera
-            );
-            m_PowerUpUIWrapper.transform.position = screenPosition;
-        }
+        label.color = buffColor;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

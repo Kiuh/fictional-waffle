@@ -1,6 +1,6 @@
-﻿using Unity.Netcode;
+﻿using EasyTransition;
+using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ClientDisconnection : MonoBehaviour
@@ -8,12 +8,15 @@ public class ClientDisconnection : MonoBehaviour
     [SerializeField]
     private Button button;
 
+    [SerializeField]
+    private TransitionSettings transitionSettings;
+
     private void OnEnable()
     {
         button.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.Shutdown();
-            SceneManager.LoadScene(0);
+            TransitionManager.Instance().Transition("MainMenu", transitionSettings, 0);
         });
     }
 }

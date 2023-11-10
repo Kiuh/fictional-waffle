@@ -67,7 +67,7 @@ public class ServerManager : MonoBehaviour
             .GetComponent<UnityTransport>()
             .SetConnectionData(address, port, "0.0.0.0");
         bool result = NetworkManager.Singleton.StartServer();
-        _ = NetworkManager.Singleton.SceneManager.LoadScene("network", LoadSceneMode.Single);
+        _ = NetworkManager.Singleton.SceneManager.LoadScene("GamePlay", LoadSceneMode.Single);
         return result;
     }
 }

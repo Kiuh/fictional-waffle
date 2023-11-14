@@ -85,11 +85,11 @@ public class Bullet : NetworkBehaviour
             DestroyBullet();
         }
 
-        if (otherObject.TryGetComponent<ShipControl>(out ShipControl shipControl))
+        if (otherObject.TryGetComponent(out ShipControl shipControl))
         {
             if (shipControl != m_Owner)
             {
-                shipControl.TakeDamage(m_Damage);
+                shipControl.TakeDamage(m_Damage, m_Owner.UniqueId);
                 DestroyBullet();
             }
         }

@@ -19,6 +19,7 @@ public class ServerManager : MonoBehaviour
     public static ushort HttpPort = 9999;
     public static int ServerCapacity = -1;
     public static string ServerName = string.Empty;
+    public static bool IsDedicatedServer = false;
 
     private void Awake()
     {
@@ -52,7 +53,7 @@ public class ServerManager : MonoBehaviour
         }
 
         Debug.Log("UDP and HTTP ports: " + arguments[0] + " " + arguments[1] + " --------------");
-
+        IsDedicatedServer = true;
         UdpPort = ushort.Parse(arguments[0]);
         HttpPort = ushort.Parse(arguments[1]);
         ServerCapacity = int.Parse(arguments[2]);

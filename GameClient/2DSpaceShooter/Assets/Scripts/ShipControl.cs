@@ -1,4 +1,7 @@
-﻿using Unity.Collections;
+﻿using NetScripts;
+using System;
+using System.Linq;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -105,8 +108,15 @@ public class ShipControl : NetworkBehaviour
     private float m_Spin;
     private Rigidbody2D m_Rigidbody2D;
 
+    private NetworkVariable<string> uniqueId = new("");
+    public string UniqueId => uniqueId.Value;
+
     private void Awake()
     {
+        if (IsServer)
+        {
+            uniqueId.Value = Guid.NewGuid().ToString();
+        }
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_ObjectPool = GameObject.FindWithTag(s_ObjectPoolTag).GetComponent<NetworkObjectPool>();
         Assert.IsNotNull(
@@ -169,13 +179,14 @@ public class ShipControl : NetworkBehaviour
         SetHealthBarValue(newValue);
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(int amount, string source)
     {
         Health.Value -= amount;
         m_FrictionEffectStartTimer.Value = NetworkManager.LocalTime.TimeAsFloat;
 
         if (Health.Value <= 0)
         {
+            SendDeathStatisticClientRpc(source);
             Health.Value = 0;
 
             //todo: reset all buffs
@@ -186,6 +197,24 @@ public class ShipControl : NetworkBehaviour
                 .GetNextSpawnPosition();
             GetComponent<Rigidbody2D>().velocity = Vector3.zero;
             GetComponent<Rigidbody2D>().angularVelocity = 0;
+        }
+    }
+
+    [ClientRpc]
+    private void SendDeathStatisticClientRpc(string uniqueId)
+    {
+        if (IsLocalPlayer)
+        {
+            StatisticCollector.Instance.PlayerStatisticDto.Deaths++;
+        }
+
+        if (
+            FindObjectsByType<ShipControl>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)
+                .First(x => x.UniqueId == uniqueId)
+                .IsLocalPlayer
+        )
+        {
+            StatisticCollector.Instance.PlayerStatisticDto.Kills++;
         }
     }
 
@@ -420,6 +449,8 @@ public class ShipControl : NetworkBehaviour
 
     public void AddBuff(Buff.BuffType buff)
     {
+        SendPowerUpPickupClientRpc();
+
         if (buff == Buff.BuffType.Speed)
         {
             SpeedBuffTimer.Value = NetworkManager.ServerTime.TimeAsFloat + 10;
@@ -475,6 +506,15 @@ public class ShipControl : NetworkBehaviour
         }
     }
 
+    [ClientRpc]
+    private void SendPowerUpPickupClientRpc()
+    {
+        if (IsLocalPlayer)
+        {
+            StatisticCollector.Instance.PlayerStatisticDto.Pickups++;
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (NetworkManager.Singleton.IsServer == false)
@@ -485,7 +525,7 @@ public class ShipControl : NetworkBehaviour
         Asteroid asteroid = other.gameObject.GetComponent<Asteroid>();
         if (asteroid != null)
         {
-            TakeDamage(5);
+            TakeDamage(5, null);
         }
     }
 

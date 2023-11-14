@@ -1,16 +1,19 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using Unity.Netcode;
 using UnityEngine;
 
 public class HttpServer : MonoBehaviour
 {
+    [SerializeField]
+    private int maxConnections;
     private HttpListener httpListener;
 
     public void StartHttpServer(string httpPort)
     {
         httpListener = new HttpListener();
-        httpListener.Prefixes.Add($"http://*:{httpPort}/");
+        httpListener.Prefixes.Add($"http://*:{httpPort}/Info/");
         httpListener.Start();
         _ = httpListener.BeginGetContext(new AsyncCallback(OnGetCallback), null);
     }
@@ -27,7 +30,15 @@ public class HttpServer : MonoBehaviour
         context.Response.Headers.Clear();
         try
         {
-            CreateResponse(response, new NetworkAnswer() { Status = 200 });
+            CreateResponse(
+                response,
+                new RoomPartialInfoDto()
+                {
+                    Name = ServerManager.ServerName,
+                    ActiveUsers = NetworkManager.Singleton.PendingClients.Count,
+                    Capacity = ServerManager.ServerCapacity
+                }
+            );
         }
         catch (Exception e)
         {
@@ -39,11 +50,11 @@ public class HttpServer : MonoBehaviour
         }
     }
 
-    private async void CreateResponse(HttpListenerResponse response, NetworkAnswer data = default)
+    private async void CreateResponse(HttpListenerResponse response, RoomPartialInfoDto data)
     {
         response.SendChunked = false;
-        response.StatusCode = data.Status;
-        response.StatusDescription = data.Status == 200 ? "OK" : "Internal Server Error";
+        response.StatusCode = 200;
+        response.StatusDescription = "OK";
         using (StreamWriter writer = new(response.OutputStream, response.ContentEncoding))
         {
             await writer.WriteAsync(JsonUtility.ToJson(data));
@@ -71,4 +82,11 @@ public class NetworkAnswer
     public int Status = 200;
     public string ErrorMessage = "No Error";
     public object Data = "Sample data";
+}
+
+public class RoomPartialInfoDto
+{
+    public string Name;
+    public int ActiveUsers;
+    public int Capacity;
 }

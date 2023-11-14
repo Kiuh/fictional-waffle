@@ -17,6 +17,8 @@ public class ServerManager : MonoBehaviour
     private UnityTransport transport;
     public static ushort UdpPort = 7878;
     public static ushort HttpPort = 9999;
+    public static int ServerCapacity = -1;
+    public static string ServerName = string.Empty;
 
     private void Awake()
     {
@@ -43,8 +45,8 @@ public class ServerManager : MonoBehaviour
             .Skip(1)
             .Select(x => x.Trim(','))
             .ToList();
-
-        if (arguments.Count < 2 || arguments.Count > 3)
+        const int args_count = 4;
+        if (arguments.Count < args_count || arguments.Count > args_count)
         {
             return;
         }
@@ -53,6 +55,9 @@ public class ServerManager : MonoBehaviour
 
         UdpPort = ushort.Parse(arguments[0]);
         HttpPort = ushort.Parse(arguments[1]);
+        ServerCapacity = int.Parse(arguments[2]);
+        ServerName = arguments[3];
+
         bool result = StartDockerServer("127.0.0.1", UdpPort);
         Debug.Log($"Is Server: {NetworkManager.Singleton.IsServer}");
         Debug.Log(

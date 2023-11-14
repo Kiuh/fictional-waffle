@@ -39,7 +39,7 @@ namespace Networking
                 };
             request.SetRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-            if (content is not null)
+            if (content != null)
             {
                 request.uploadHandler = new UploadHandlerRaw(
                     Encoding.UTF8.GetBytes(JsonUtility.ToJson(content))

@@ -22,4 +22,17 @@
 		public required int Capacity { get; set; }
 		public required string ContainerName { get; set; }
     }
+
+	public class ServerConnectionData
+	{
+		public required string Ipv4Address { get; set; }
+        public required ushort Port { get; set; }
+
+		public required bool IsFull { get; set; }
+	}
+
+    public class RoomInfosDto
+	{
+		public List<RoomInfoDto> RoomsDtoList;
+    }
 }

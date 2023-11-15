@@ -41,6 +41,8 @@ namespace AdminClient.Authorization.Login
 				LoginFailed = true;
 				return;
 			}
+
+			Application.Current.MainPage = new Management.ManagementView();
 		}
     }
 }

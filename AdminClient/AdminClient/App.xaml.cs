@@ -1,5 +1,4 @@
 ﻿using AdminClient.Authorization;
-using AdminClient.Management;
 
 namespace AdminClient
 {
@@ -9,7 +8,7 @@ namespace AdminClient
         {
             InitializeComponent();
 
-            MainPage = new ManagementView();
+            MainPage = new AuthorizationView();
         }
     }
 }

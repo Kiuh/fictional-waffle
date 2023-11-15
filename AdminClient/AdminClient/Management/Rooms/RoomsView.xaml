@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AdminClient.Management.Rooms.RoomsView"
+             Title="rooms">
+    <Grid>
+        <StackLayout VerticalOptions="Start" BindableLayout.ItemsSource="{Binding Rooms}">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="10" BorderColor="{StaticResource Secondary}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <HorizontalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                <Label Text="name:" Margin="10, 0"/>
+                                <Label Text="{Binding Name}"/>
+                            </HorizontalStackLayout>
+
+                            <HorizontalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                <Label Text="container name:" Margin="10, 0"/>
+                                <Label Text="{Binding ContainerName}"/>
+                            </HorizontalStackLayout>
+
+                            <HorizontalStackLayout Grid.Column="2" VerticalOptions="Center">
+                                <Label Text="users:" Margin="10, 0"/>
+                                <Label Text="{Binding ActiveUsers}"/>
+                                <Label Text="/"/>
+                                <Label Text="{Binding Capacity}"/>
+                            </HorizontalStackLayout>
+
+                            <Button Text="undeploy" Command="{Binding DropRoomCommand}" Grid.Column="3"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
+
+        <Grid VerticalOptions="End">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <HorizontalStackLayout VerticalOptions="End" Padding="10">
+                <Entry Placeholder="name" Margin="10, 0" Text="{Binding NewRoomName}"/>
+                <Entry Placeholder="container name" Margin="10, 0" Text="{Binding NewContainerName}"/>
+                <Entry Placeholder="capacity" Margin="10, 0" Text="{Binding NewRoomCapacity}"/>
+
+                <Button Text="deploy" Command="{Binding DeployRoomCommand}"/>
+            </HorizontalStackLayout>
+
+            <Button Text="refresh" Grid.Column="1" HorizontalOptions="End" Margin="10" Command="{Binding RefreshCommand}"/>
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -2,6 +2,7 @@
 using AuthorizationApi;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AdminClient.Authorization.Login
 {
@@ -38,6 +39,7 @@ namespace AdminClient.Authorization.Login
 			if (res != HttpStatusCode.OK)
 			{
 				LoginFailed = true;
+				return;
 			}
 		}
     }

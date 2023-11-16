@@ -56,7 +56,7 @@ namespace MainMenu
                         dto.Name,
                         dto.ActiveUsers,
                         dto.Capacity,
-                        () => ConnectToServer(dto.Name)
+                        () => ConnectToServer(dto.ContainerName)
                     );
                 }
             }

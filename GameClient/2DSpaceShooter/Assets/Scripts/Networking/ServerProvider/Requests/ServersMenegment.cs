@@ -22,11 +22,11 @@ namespace Networking
 
         public IEnumerator GetServerConnectionData(
             Action<UnityWebRequest> action,
-            string serverName
+            string containerName
         )
         {
             UnityWebRequest webRequest = requestBuilder.CreateRequest(
-                $"/Rooms/{serverName}",
+                $"/Rooms/{containerName}",
                 HttpMethod.Get,
                 jwt: JWTTokenMode.Enable
             );

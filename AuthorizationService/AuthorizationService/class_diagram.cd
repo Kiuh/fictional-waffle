@@ -1,0 +1,413 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AuthorizationService.Common.ApiException">
+    <Position X="28.25" Y="7.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Common\ApiException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AuthorizationService.Common.LoggerTools">
+    <Position X="29.75" Y="5.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\LoggerTools.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AuthorizationService.Controllers.AuthorizationController">
+    <Position X="3" Y="3.25" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="jwtTokenToolsService" Type="AuthorizationService.Services.IJwtTokenToolsService" ManuallyRouted="true">
+      <Path>
+        <Point X="4.273" Y="4.55" />
+        <Point X="4.273" Y="5.206" />
+        <Point X="6.75" Y="5.206" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="passwordRecoversService" Type="AuthorizationService.Services.Models.IPasswordRecoversService" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.5" Y="3.25" />
+        <Point X="3.5" Y="1.206" />
+        <Point X="6.75" Y="1.206" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQEAAABAAACgAACAAAAAQAAEABAAAAAAAAQAAAEAAM=</HashCode>
+      <FileName>Controllers\AuthorizationController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="emailVerificationsService" />
+      <Field Name="jwtTokenToolsService" />
+      <Field Name="mailBodyBuilderService" />
+      <Field Name="mailSenderService" />
+      <Field Name="passwordRecoversService" />
+      <Field Name="usersService" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AuthorizationService.Controllers.RedirectionSettings">
+    <Position X="10.75" Y="2" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Controllers\EndpointController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AuthorizationService.Controllers.EndpointController">
+    <Position X="10.75" Y="4" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Controllers\EndpointController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="jwtTokenToolsService" />
+      <Field Name="redirectionSettings" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AuthorizationService.Controllers.PublicKeyController">
+    <Position X="2.5" Y="13.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="cryptographyService" Type="AuthorizationService.Services.ICryptographyService">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.58" Y="0.225" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAABAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Controllers\PublicKeyController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="cryptographyService" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AuthorizationService.Middleware.ErrorBody">
+    <Position X="28.25" Y="10.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Middleware\ErrorHandlingMiddleware.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AuthorizationService.Middleware.ErrorHandlingMiddleware">
+    <Position X="28.25" Y="6.25" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Middleware\ErrorHandlingMiddleware.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AuthorizationService.Services.Mail.MailBodyBuilderSettings">
+    <Position X="28" Y="5" Width="2" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Services\Mail\MailBodyBuilderService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AuthorizationService.Services.Mail.MailBodyBuilderService" BaseTypeListCollapsed="true">
+    <Position X="26.5" Y="9.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gAAAACAAAAAAAAAAAAAABAAAIBAEAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Services\Mail\MailBodyBuilderService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AuthorizationService.Services.Mail.MailSenderSettings">
+    <Position X="13.25" Y="8.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Services\Mail\MailSenderService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AuthorizationService.Services.Mail.MailData">
+    <Position X="26" Y="5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAIAAAAAAAAAAAQAAAAAACAAAAAA=</HashCode>
+      <FileName>Services\Mail\MailSenderService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AuthorizationService.Services.Mail.MailSenderService" BaseTypeListCollapsed="true">
+    <Position X="13.25" Y="6.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="mailSettings" Type="AuthorizationService.Services.Mail.MailSenderSettings">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.075" Y="0.438" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\Mail\MailSenderService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mailSettings" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AuthorizationService.Services.Models.EmailVerificationsService" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="10.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="authorizationDbContext" Type="AuthorizationApi.Database.AuthorizationDbContext">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.719" Y="0.743" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAIAEAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Services\Models\EmailVerificationsService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="authorizationDbContext" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AuthorizationService.Services.Models.PasswordRecoversService" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="10.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="tokensLifeTimeSettings" Type="AuthorizationService.Services.TokensLifeTimeSettings">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.729" Y="0.201" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAIAAAAAAQAAAAAAAAAAAAAIAABAAAQ=</HashCode>
+      <FileName>Services\Models\PasswordRecoversService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="authorizationDbContext" />
+      <Field Name="tokensLifeTimeSettings" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AuthorizationService.Services.Models.UsersService" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="10.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="cryptographyService" Type="AuthorizationService.Services.ICryptographyService">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.544" Y="0.149" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAQAAAAAQAAAAAAAAAAQACAAAAAAACAQAQ=</HashCode>
+      <FileName>Services\Models\UsersService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="authorizationDbContext" />
+      <Field Name="cryptographyService" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AuthorizationService.Services.CryptographyServiceSettings">
+    <Position X="26.5" Y="6.25" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\CryptographyService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AuthorizationService.Services.CryptographyService" BaseTypeListCollapsed="true">
+    <Position X="26.5" Y="7.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAJAQAAABAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Services\CryptographyService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AuthorizationService.Services.DbInitializeService" BaseTypeListCollapsed="true">
+    <Position X="5" Y="10.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="authorizationDbContext" Type="AuthorizationApi.Database.AuthorizationDbContext">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.069" Y="0.901" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Services\DbInitializeService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="authorizationDbContext" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AuthorizationService.Services.TokensLifeTimeSettings">
+    <Position X="10.5" Y="12" Width="2" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAABAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\JwtTokenToolsService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AuthorizationService.Services.JwtTokenToolsSettings">
+    <Position X="10.5" Y="15.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAEAAQAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Services\JwtTokenToolsService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AuthorizationService.Services.JwtTokenToolsService" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="13.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="tokenSettings" Type="AuthorizationService.Services.JwtTokenToolsSettings">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.266" Y="0.335" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="tokensLifeTimeSettings" Type="AuthorizationService.Services.TokensLifeTimeSettings">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.779" Y="0.307" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAMAAAAAAAAgAAAAAAQAAACAAAAAIAAAAAAA=</HashCode>
+      <FileName>Services\JwtTokenToolsService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="tokenSettings" />
+      <Field Name="tokensLifeTimeSettings" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AuthorizationApi.Database.AuthorizationDbContext" Collapsed="true">
+    <Position X="6" Y="8" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="AuthorizationService.Services.Mail.IMailBodyBuilder">
+    <Position X="6.75" Y="3.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Services\Mail\MailBodyBuilderService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AuthorizationService.Services.Mail.IMailSenderService">
+    <Position X="6.75" Y="5.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\Mail\MailSenderService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AuthorizationService.Services.Models.IEmailVerificationsService">
+    <Position X="6.75" Y="1.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAIAEAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\Models\EmailVerificationsService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AuthorizationService.Services.Models.IPasswordRecoversService">
+    <Position X="6.75" Y="0.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAIAAAAAAQAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Services\Models\PasswordRecoversService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AuthorizationService.Services.Models.IUsersService">
+    <Position X="6.75" Y="2.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAQAAAAAQAAAAAAAAAAQACAAAAAAACAAAA=</HashCode>
+      <FileName>Services\Models\UsersService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AuthorizationService.Services.ICryptographyService">
+    <Position X="2.5" Y="12" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAIAAAAABAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Services\CryptographyService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AuthorizationService.Services.IDbInitializeService">
+    <Position X="28" Y="9.25" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\DbInitializeService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AuthorizationService.Services.IJwtTokenToolsService">
+    <Position X="6.75" Y="4.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAgAAAAAAQAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\JwtTokenToolsService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

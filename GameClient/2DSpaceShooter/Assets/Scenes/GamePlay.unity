@@ -1316,7 +1316,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1380148068}
   - component: {fileID: 1380148067}
-  - component: {fileID: 1380148069}
   m_Layer: 0
   m_Name: Music
   m_TagString: Untagged
@@ -1436,22 +1435,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1380148069
-MonoBehaviour:
-  m_ObjectHideFlags: 26
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1380148066}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a11ff0bbbd2764710a28f14b1d0d1f98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ObjectsTargets:
-    m_Keys:
-    - {fileID: 1380148066}
-    m_Values: 01000000
 --- !u!1 &1453610978
 GameObject:
   m_ObjectHideFlags: 0
@@ -1650,7 +1633,6 @@ GameObject:
   - component: {fileID: 1667533373}
   - component: {fileID: 1667533371}
   - component: {fileID: 1667533369}
-  - component: {fileID: 1667533375}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1777,22 +1759,6 @@ Transform:
   - {fileID: 1339728176}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1667533375
-MonoBehaviour:
-  m_ObjectHideFlags: 26
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1667533368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a11ff0bbbd2764710a28f14b1d0d1f98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ObjectsTargets:
-    m_Keys:
-    - {fileID: 1667533368}
-    m_Values: 01000000
 --- !u!1 &1845552412
 GameObject:
   m_ObjectHideFlags: 0

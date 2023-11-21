@@ -17,10 +17,10 @@ public interface IMailBodyBuilder
 
 public class MailBodyBuilderService : IMailBodyBuilder
 {
-    private string welcomeMailTemplate;
-    private string verificationMailTemplate;
-    private string accessCodeMailTemplate;
-    private string verificationLink;
+    private readonly string welcomeMailTemplate;
+    private readonly string verificationMailTemplate;
+    private readonly string accessCodeMailTemplate;
+    private readonly string verificationLink;
 
     public MailBodyBuilderService(IOptions<MailBodyBuilderSettings> mailBodyBuilderSettings)
     {
@@ -44,7 +44,10 @@ public class MailBodyBuilderService : IMailBodyBuilder
 
     public MailData CreateVerificationMail(EmailVerification emailVerification)
     {
-        string htmlContent = verificationMailTemplate.Replace("|--JWTTOKEN--|", emailVerification.JwtToken);
+        string htmlContent = verificationMailTemplate.Replace(
+            "|--JWTTOKEN--|",
+            emailVerification.JwtToken
+        );
         htmlContent = htmlContent.Replace("|--LINK--|", verificationLink);
         return new MailData()
         {

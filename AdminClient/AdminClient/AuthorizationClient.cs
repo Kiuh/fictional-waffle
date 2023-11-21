@@ -1,40 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AuthorizationApi;
 using System.Net;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
-using AuthorizationApi;
 
 namespace AdminClient
 {
     internal static class AuthorizationClient
-	{
-		private static HttpClient client;
+    {
+        private static readonly HttpClient client;
 
-		static AuthorizationClient()
-		{
-			client = new HttpClient();
-			client.BaseAddress = new Uri("");
+        static AuthorizationClient()
+        {
+            client = new HttpClient { BaseAddress = new Uri("") };
         }
 
-		public static async Task<string> GetPubkey()
-		{
-			var res = await client.GetAsync("/PublicKey");
-			return await res.Content.ReadAsStringAsync();
-		}
+        public static async Task<string> GetPubkey()
+        {
+            HttpResponseMessage res = await client.GetAsync("/PublicKey");
+            return await res.Content.ReadAsStringAsync();
+        }
 
-		public static async Task<HttpStatusCode> Login(LoginDto data)
-		{
-			var res = await client.PostAsJsonAsync("/Login", data);
-			return res.StatusCode;
-		}
+        public static async Task<HttpStatusCode> Login(LoginDto data)
+        {
+            HttpResponseMessage res = await client.PostAsJsonAsync("/Login", data);
+            return res.StatusCode;
+        }
 
-		public static async Task<HttpStatusCode> Register(RegistrationDto data)
-		{
-			var res = await client.PutAsJsonAsync("/Registration", data);
-			return res.StatusCode;
-		}
+        public static async Task<HttpStatusCode> Register(RegistrationDto data)
+        {
+            HttpResponseMessage res = await client.PutAsJsonAsync("/Registration", data);
+            return res.StatusCode;
+        }
     }
 }

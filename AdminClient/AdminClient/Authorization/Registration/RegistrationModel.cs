@@ -4,39 +4,39 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace AdminClient.Authorization.Registration
 {
-    public partial class RegistrationModel: ObservableObject
+    public partial class RegistrationModel : ObservableObject
     {
-		[ObservableProperty]
-		private string login = "";
+        [ObservableProperty]
+        private string login = "";
 
-		[ObservableProperty]
-		private string password = "";
+        [ObservableProperty]
+        private string password = "";
 
-		[ObservableProperty]
-		private string email = "";
+        [ObservableProperty]
+        private string email = "";
 
-		[RelayCommand]
-		public async void Register()
-		{
-			var pubkey = await AuthorizationClient.GetPubkey();
-			Cryptography.SetPubkey(pubkey);
+        [RelayCommand]
+        public async Task Register()
+        {
+            string pubkey = await AuthorizationClient.GetPubkey();
+            Cryptography.SetPubkey(pubkey);
 
-			var nonce = Random.Shared.Next().ToString();
+            string nonce = Random.Shared.Next().ToString();
 
-			var encrypted_nonce_with_email = Cryptography.EncryptString(nonce + Email);
+            string encrypted_nonce_with_email = Cryptography.EncryptString(nonce + Email);
 
-			var encrypted_hashed_password = Cryptography.HashString(Password);
-			encrypted_hashed_password = Cryptography.EncryptString(encrypted_hashed_password);
+            string encrypted_hashed_password = Cryptography.HashString(Password);
+            encrypted_hashed_password = Cryptography.EncryptString(encrypted_hashed_password);
 
-			var registration_data = new RegistrationDto()
-			{
-				Login = Login,
-				Nonce = nonce,
-				EncryptedHashedPassword = encrypted_hashed_password,
-				EncryptedNonceWithEmail = encrypted_nonce_with_email,
-			};
-
-			var res = await AuthorizationClient.Register(registration_data);
-		}
-	}
+            RegistrationDto registration_data =
+                new()
+                {
+                    Login = Login,
+                    Nonce = nonce,
+                    EncryptedHashedPassword = encrypted_hashed_password,
+                    EncryptedNonceWithEmail = encrypted_nonce_with_email,
+                };
+            _ = await AuthorizationClient.Register(registration_data);
+        }
+    }
 }

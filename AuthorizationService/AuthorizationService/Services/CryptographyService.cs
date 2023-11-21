@@ -20,8 +20,8 @@ public interface ICryptographyService
 
 public class CryptographyService : ICryptographyService
 {
-    private ICryptoNet cryptoNet;
-    private string publicKey;
+    private readonly ICryptoNet cryptoNet;
+    private readonly string publicKey;
 
     public CryptographyService(IOptions<CryptographyServiceSettings> cryptoData)
     {

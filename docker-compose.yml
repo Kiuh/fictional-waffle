@@ -17,9 +17,9 @@ services:
       - ./AuthorizationService/Mails:/app/Mails
       - ./AuthorizationService:/root/.microsoft/usersecrets/36c29860-ecc0-445b-b7aa-109d90c26842
     depends_on:
-      - postgres_db
+      - authorization_postgres_db
 
-  postgres_db:
+  authorization_postgres_db:
     image: postgres
     environment:
       POSTGRES_DB: "LifeCreatorDb"
@@ -30,8 +30,30 @@ services:
       - 5432
     volumes:
       - authorization-data:/var/lib/postgresql/data
+  
+  statistic-service:
+    build:
+      context: ./StatisticService
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: DockerDevelopment
+    ports:
+      - 5005:80
+    depends_on:
+      - statistic_postgres_db
+
+  statistic_postgres_db:
+    image: postgres
+    environment:
+      POSTGRES_DB: "statistic_db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - 5432
+    volumes:
+      - statistic-data:/var/lib/postgresql/data
 
 volumes:
   authorization-data:
-  pgadmin-data:
-  core-data:  
+  statistic-data:

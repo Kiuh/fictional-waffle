@@ -48,7 +48,7 @@ public class MailSenderService : IMailSenderService
                 {
                     To = new List<SendSmtpEmailTo>
                     {
-                        new SendSmtpEmailTo(mailData.ReceiverEmail, mailData.ReceiverName)
+                        new(mailData.ReceiverEmail, mailData.ReceiverName)
                     },
                     Sender = new SendSmtpEmailSender(
                         name: mailSettings.SenderName,
@@ -60,7 +60,6 @@ public class MailSenderService : IMailSenderService
             ApiResponse<CreateSmtpEmail> result = await api.SendTransacEmailAsyncWithHttpInfo(
                 email
             );
-
         }
         catch
         {

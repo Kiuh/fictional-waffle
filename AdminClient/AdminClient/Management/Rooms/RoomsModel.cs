@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace AdminClient.Management.Rooms
 {
-    public partial class Room: ObservableObject
+    public partial class Room : ObservableObject
     {
         [ObservableProperty]
         private string name = "";
@@ -25,7 +25,7 @@ namespace AdminClient.Management.Rooms
         }
     }
 
-    public partial class RoomsModel: ObservableObject
+    public partial class RoomsModel : ObservableObject
     {
         public static RoomsModel Instance;
 
@@ -86,13 +86,13 @@ namespace AdminClient.Management.Rooms
         [RelayCommand]
         public async void DeployRoom()
         {
-            RoomManagerClient.DeployRoom(newContainerName, newRoomCapacity, newRoomName);
+            _ = RoomManagerClient.DeployRoom(newContainerName, newRoomCapacity, newRoomName);
         }
 
         public async void DropRoom(Room room)
         {
-            RoomManagerClient.DropRoom(room.ContainerName);
-            rooms.Remove(room);
+            _ = RoomManagerClient.DropRoom(room.ContainerName);
+            _ = rooms.Remove(room);
         }
     }
 }

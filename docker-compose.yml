@@ -10,6 +10,8 @@ services:
       ASPNETCORE_URLS: https://+:80
       ASPNETCORE_Kestrel__Certificates__Default__Password: ComplexPassword
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/authorizationpassword.pfx
+      DATABASE_PORT: 5433
+      DATABASE_HOST: authorization_postgres_db
     ports:
       - 5000:80
     volumes:
@@ -26,8 +28,7 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       PGDATA: "/var/lib/postgresql/data/pgdata"
-    ports:
-      - 5432
+    command: -p 5433
     volumes:
       - authorization-data:/var/lib/postgresql/data
   
@@ -37,6 +38,7 @@ services:
       dockerfile: Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: DockerDevelopment
+      ASPNETCORE_URLS: http://+:80
     ports:
       - 5005:80
     depends_on:
@@ -50,10 +52,42 @@ services:
       POSTGRES_PASSWORD: "postgres"
       PGDATA: "/var/lib/postgresql/data/pgdata"
     ports:
-      - 5432
+      - 5434:5432
     volumes:
       - statistic-data:/var/lib/postgresql/data
 
+  admin_authorization:
+    build:
+      context: ./AuthorizationService
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: DockerDevelopment
+      ASPNETCORE_URLS: https://+:80
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ComplexPassword
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/authorizationpassword.pfx
+      DATABASE_PORT: 5435
+      DATABASE_HOST: admin_authorization_db
+    ports:
+      - 5010:80
+    volumes:
+      - ./AuthorizationService/.aspnet/https:/https:ro
+      - ./AuthorizationService/Mails:/app/Mails
+      - ./AuthorizationService:/root/.microsoft/usersecrets/36c29860-ecc0-445b-b7aa-109d90c26842
+    depends_on:
+      - admin_authorization_db
+
+  admin_authorization_db:
+    image: postgres
+    environment:
+      POSTGRES_DB: "LifeCreatorDb"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    command: -p 5435
+    volumes:
+      - admin-authorization-data:/var/lib/postgresql/data
+
 volumes:
+  admin-authorization-data:
   authorization-data:
   statistic-data:

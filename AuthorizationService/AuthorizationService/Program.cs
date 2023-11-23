@@ -15,6 +15,10 @@ string connectionStringSection;
 string mailBodyBuilderSettingsSection;
 string redirectionSettingsSection;
 
+string databasePort = Environment.GetEnvironmentVariable("DATABASE_PORT");
+string databaseHost = Environment.GetEnvironmentVariable("DATABASE_HOST");
+string databaseConnectionString = $"Host={databaseHost};Port={databasePort};Database=LifeCreatorDb;Username=postgres;Password=postgres";
+
 if (builder.Environment.EnvironmentName is "DockerDevelopment" or "Production")
 {
     connectionStringSection = "AuthorizationDbContextDocker";
@@ -36,7 +40,7 @@ else
 }
 
 builder.Services.AddDbContext<AuthorizationDbContext>(
-    options => options.UseNpgsql(builder.Configuration.GetConnectionString(connectionStringSection))
+    options => options.UseNpgsql(databaseConnectionString)
 );
 
 builder.Services.AddTransient<IUsersService, UsersService>();
@@ -95,7 +99,7 @@ WebApplication app = builder.Build();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
-if (app.Environment.EnvironmentName is "DockerDevelopment" or "DesktopDevelopment")
+if (app.Environment.EnvironmentName is "DesktopDevelopment")
 {
     _ = app.UseSwagger();
     _ = app.UseSwaggerUI();

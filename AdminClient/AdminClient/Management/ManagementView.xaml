@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AdminClient.Management.ManagementView"
              xmlns:rooms="clr-namespace:AdminClient.Management.Rooms"
+             xmlns:stats="clr-namespace:AdminClient.Management.Stats"
              Title="ManagementView">
     <rooms:RoomsView/>
+    <stats:StatsView/>
 </TabbedPage>

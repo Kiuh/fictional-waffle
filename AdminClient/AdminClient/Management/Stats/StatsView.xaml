@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AdminClient.Management.Stats.StatsView"
+             Title="User statistics">
+    <StackLayout BindableLayout.ItemsSource="{Binding Users}">
+        <BindableLayout.ItemTemplate>
+            <DataTemplate>
+                <Frame Margin="10" BorderColor="{StaticResource Secondary}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <HorizontalStackLayout Grid.Column="0" VerticalOptions="Center">
+                            <Label Text="id:" Margin="10, 0"/>
+                            <Label Text="{Binding Id}"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label Text="kills:" Margin="10, 0"/>
+                            <Label Text="{Binding Kills}"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Grid.Column="2" VerticalOptions="Center">
+                            <Label Text="deaths:" Margin="10, 0"/>
+                            <Label Text="{Binding Deaths}"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Grid.Column="3" VerticalOptions="Center">
+                            <Label Text="pickups:" Margin="10, 0"/>
+                            <Label Text="{Binding Pickups}"/>
+                        </HorizontalStackLayout>
+                    </Grid>
+                </Frame>
+            </DataTemplate>
+        </BindableLayout.ItemTemplate>
+    </StackLayout>
+</ContentPage>

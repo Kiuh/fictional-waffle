@@ -62,17 +62,18 @@ namespace StatisticService
         [HttpGet("/AllStatistic")]
         public IActionResult GetAllStatistic()
         {
-            List<PlayerStatisticDto> playerStatisticDtos = statisticDbContext.Statistics
+            List<PlayerStatisticWithIdDto> playerStatisticDtos = statisticDbContext.Statistics
                 .ToList()
-                .Select(statistic => new PlayerStatisticDto()
+                .Select(statistic => new PlayerStatisticWithIdDto()
                 {
                     DateTime = statistic.DateTime,
                     Deaths = statistic.Deaths,
                     Duration = statistic.Duration,
                     Kills = statistic.Kills,
-                    Pickups = statistic.Pickups
+                    Pickups = statistic.Pickups,
+                    Id = statistic.Id
                 }).ToList();
-            StatisticList statisticList = new() { StatisticCells = playerStatisticDtos };
+            StatisticWithIdList statisticList = new() { StatisticCells = playerStatisticDtos };
             return Ok(statisticList);
         }
     }

@@ -9,13 +9,13 @@ namespace AdminClient
 
         static RoomManagerClient()
         {
-            client = new HttpClient { BaseAddress = new Uri("http://127.0.0.1:5044") };
+            client = new HttpClient { BaseAddress = new Uri("http://127.0.0.1:5015") };
         }
 
         public static List<RoomInfoDto> GetRooms()
         {
             HttpResponseMessage res = client.GetAsync("/Rooms").Result;
-            return res.Content.ReadFromJsonAsync<List<RoomInfoDto>>().Result;
+            return res.Content.ReadFromJsonAsync<RoomInfosDto>().Result.RoomsDtoList;
         }
 
         public static async Task<bool> DeployRoom(string containerName, int capacity, string name)

@@ -8,7 +8,7 @@ namespace RoomManager
 
         static NetworkClient()
         {
-            client = new HttpClient { BaseAddress = new Uri("http://google.com") };
+            client = new HttpClient { BaseAddress = new Uri("") };
         }
 
         public static RoomPartialInfoDto? TryGetRoomPartialInfo(Uri room)

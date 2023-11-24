@@ -12,14 +12,29 @@ namespace RoomManager
             public Uri Uri;
         }
 
-        private const string DOCKER_HOST = "http://127.0.0.1";
-        private const string DOCKER_DAEMON_URI = "tcp://127.0.0.1:2375";
-        private const string IMAGE_NAME = "fictional-waffle-authorization:latest";
+        private static string DOCKER_HOST = "http://127.0.0.1";
+        private static string DOCKER_DAEMON_URI = "tcp://127.0.0.1:2375";
+        private static string IMAGE_NAME = "fictional-waffle-authorization:latest";
 
         private static readonly DockerClient client;
 
         static DockerNetworkClient()
         {
+            if(Environment.GetEnvironmentVariable("DOCKER_HOST") != null)
+            {
+                DOCKER_HOST = Environment.GetEnvironmentVariable("DOCKER_HOST");
+            }
+
+            if (Environment.GetEnvironmentVariable("DOCKER_DAEMON_URI") != null)
+            {
+                DOCKER_DAEMON_URI = Environment.GetEnvironmentVariable("DOCKER_DAEMON_URI");
+            }
+
+            if (Environment.GetEnvironmentVariable("IMAGE_NAME") != null)
+            {
+                IMAGE_NAME = Environment.GetEnvironmentVariable("IMAGE_NAME");
+            }
+
             client = new DockerClientConfiguration(new Uri(DOCKER_DAEMON_URI)).CreateClient();
         }
 
@@ -89,7 +104,7 @@ namespace RoomManager
             {
                 IList<Port> ports = container.Ports;
 
-                Port port = ports.First(p => p.PublicPort != 0);
+                Port? port = ports.FirstOrDefault(p => p.PublicPort != 0 && p.PublicPort > 50000);
                 if (port == null)
                 {
                     continue;

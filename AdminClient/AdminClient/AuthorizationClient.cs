@@ -10,7 +10,7 @@ namespace AdminClient
 
         static AuthorizationClient()
         {
-            client = new HttpClient { BaseAddress = new Uri("") };
+            client = new HttpClient { BaseAddress = new Uri("https://127.0.0.1:5000") };
         }
 
         public static async Task<string> GetPubkey()

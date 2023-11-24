@@ -8,12 +8,12 @@ string connectionString;
 if (builder.Environment.EnvironmentName is "DockerDevelopment" or "Production")
 {
     connectionString =
-        "Host=statistic_postgres_db;Port=5434;Database=statistic_db;Username=postgres;Password=postgres";
+        "Host=statistic_postgres_db;Port=5432;Database=statistic_db;Username=postgres;Password=postgres";
 }
 else
 {
     connectionString =
-        "Host=localhost;Port=5434;Database=statistic_db;Username=postgres;Password=postgres";
+        "Host=localhost;Port=5432;Database=statistic_db;Username=postgres;Password=postgres";
 }
 
 builder.Services.AddDbContext<StatisticDbContext>(options => options.UseNpgsql(connectionString));

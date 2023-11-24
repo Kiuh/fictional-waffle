@@ -25,34 +25,30 @@ namespace AdminClient.Management.Stats
 
         public void Init()
         {
-            users.Add(new UserStats() { Id = 5, Kills = 5, Deaths = 1, Pickups = 10 });
-            users.Add(new UserStats() { Id = 5, Kills = 5, Deaths = 1, Pickups = 10 });
-            users.Add(new UserStats() { Id = 5, Kills = 5, Deaths = 1, Pickups = 10 });
+            var stats = StatsClient.GetPlayerStats();
+            foreach (var stat in stats)
+            {
+                bool user_exists = false;
 
-            //var stats = StatsClient.GetPlayerStats();
-            //foreach(var stat in stats)
-            //{
-            //    bool user_exists = false;
+                foreach (var user in Users)
+                {
+                    if (user.Id == stat.Id)
+                    {
+                        user.Pickups += stat.Pickups;
+                        user.Kills += stat.Kills;
+                        user.Deaths += stat.Deaths;
 
-            //    foreach(var user in Users)
-            //    {
-            //        if(user.Id == stat.Id)
-            //        {
-            //            user.Pickups += stat.Pickups;
-            //            user.Kills += stat.Kills;
-            //            user.Deaths += stat.Deaths;
+                        user_exists = true;
 
-            //            user_exists = true;
+                        break;
+                    }
+                }
 
-            //            break;
-            //        }
-            //    }
-
-            //    if(!user_exists)
-            //    {
-            //        Users.Add(new UserStats() { Id = (int)stat.Id, Kills = stat.Kills, Deaths = stat.Deaths, Pickups = stat.Pickups });
-            //    }
-            //}
+                if (!user_exists)
+                {
+                    Users.Add(new UserStats() { Id = (int)stat.Id, Kills = stat.Kills, Deaths = stat.Deaths, Pickups = stat.Pickups });
+                }
+            }
         }
     }
 }

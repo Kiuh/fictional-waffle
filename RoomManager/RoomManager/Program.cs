@@ -15,7 +15,7 @@ namespace RoomManager
             _ = app.MapDelete("Room/{containerName}", UndeployRoom);
             _ = app.MapGet("Room/{containerName}", GetServerConnectionData);
 
-            app.Run("http://0.0.0.0:5044");
+            app.Run("http://0.0.0.0:8080");
         }
 
         private static bool DeployRoom([FromBody] RoomDeployRequestDto request)

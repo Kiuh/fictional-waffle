@@ -32,15 +32,15 @@ services:
     volumes:
       - authorization-data:/var/lib/postgresql/data
   
-  statistic-service:
+  statistic_service:
     build:
       context: ./StatisticService
       dockerfile: Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: DockerDevelopment
-      ASPNETCORE_URLS: http://+:80
+      ASPNETCORE_URLS: http://+:8080
     ports:
-      - 5005:80
+      - 5005:8080
     depends_on:
       - statistic_postgres_db
 
@@ -86,6 +86,17 @@ services:
     command: -p 5435
     volumes:
       - admin-authorization-data:/var/lib/postgresql/data
+
+  room_manager:
+    build:
+      context: ./RoomManager
+      dockerfile: Dockerfile
+    environment:
+      DOCKER_HOST: http://127.0.0.1
+      DOCKER_DAEMON_URI: tcp://localhost:2375
+      IMAGE_NAME: fictional-waffle-authorization:latest
+    ports:
+      - 5015:8080
 
 volumes:
   admin-authorization-data:

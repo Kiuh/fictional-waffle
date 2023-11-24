@@ -45,36 +45,20 @@ namespace AdminClient.Management.Rooms
         {
             Instance = this;
 
-            var r = new Room();
-            r.Name = "test_room";
-            r.ContainerName = "room_1067";
-            r.Capacity = 10;
-            r.ActiveUsers = 0;
-            rooms.Add(r);
-            r = new Room();
-            r.Name = "test_room_2";
-            r.ContainerName = "room_1132";
-            r.Capacity = 15;
-            r.ActiveUsers = 0;
-            rooms.Add(r);
-            r = new Room();
-            r.Name = "test_room_3";
-            r.ContainerName = "room_671";
-            r.Capacity = 5;
-            r.ActiveUsers = 0;
-            rooms.Add(r);
+            var rooms = RoomManagerClient.GetRooms();
+            if(rooms != null)
+            {
+                foreach (var room in rooms)
+                {
+                    var r = new Room();
+                    r.Name = room.Name;
+                    r.ContainerName = room.ContainerName;
+                    r.Capacity = room.Capacity;
+                    r.ActiveUsers = room.ActiveUsers;
 
-            //var rooms = RoomManagerClient.GetRooms().Result;
-            //foreach (var room in rooms)
-            //{
-            //    var r = new Room();
-            //    r.Name = room.Name;
-            //    r.ContainerName = room.ContainerName;
-            //    r.Capacity = room.Capacity;
-            //    r.ActiveUsers = room.ActiveUsers;
-
-            //    Rooms.Add(r);
-            //}
+                    Rooms.Add(r);
+                }
+            }
         }
 
         [RelayCommand]

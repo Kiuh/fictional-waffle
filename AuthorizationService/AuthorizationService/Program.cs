@@ -6,38 +6,26 @@ using AuthorizationService.Services.Mail;
 using AuthorizationService.Services.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddUserSecrets<Program>();
 
-string connectionStringSection;
-string mailBodyBuilderSettingsSection;
-string redirectionSettingsSection;
+string? envVar = Environment.GetEnvironmentVariable("ROOM_MANAGER_IP_ADDRESS");
+string roomManagerApiPath = envVar != null ? $"http://{envVar}" : "http://localhost:5132";
 
-string databasePort = Environment.GetEnvironmentVariable("DATABASE_PORT");
-string databaseHost = Environment.GetEnvironmentVariable("DATABASE_HOST");
-string databaseConnectionString = $"Host={databaseHost};Port={databasePort};Database=LifeCreatorDb;Username=postgres;Password=postgres";
+envVar = Environment.GetEnvironmentVariable("STATISTIC_SERVICE_IP_ADDRESS");
+string statisticServiceApiPath = envVar != null ? $"http://{envVar}" : "http://localhost:5132";
 
-if (builder.Environment.EnvironmentName is "DockerDevelopment" or "Production")
-{
-    connectionStringSection = "AuthorizationDbContextDocker";
-    mailBodyBuilderSettingsSection = "MailBodyBuilderSettingsDocker";
-    redirectionSettingsSection = "RedirectionSettingsDocker";
-}
-else
-{
-    if (builder.Environment.EnvironmentName is not "DesktopDevelopment")
-    {
-        throw new Exception("Unknown Environment");
-    }
-    else
-    {
-        connectionStringSection = "AuthorizationDbContextWindows";
-        mailBodyBuilderSettingsSection = "MailBodyBuilderSettingsDesktop";
-        redirectionSettingsSection = "RedirectionSettingsDesktop";
-    }
-}
+envVar = Environment.GetEnvironmentVariable("MAIL_VERIFICATION_IP_ADDRESS");
+string mailVerificationLink =
+    envVar != null ? $"https://{envVar}/Verification" : "https://localhost:5000/Verification";
+
+string databasePort = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "5432";
+string databaseHost = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
+string databaseConnectionString =
+    $"Host={databaseHost};Port={databasePort};Database=LifeCreatorDb;Username=postgres;Password=postgres";
 
 builder.Services.AddDbContext<AuthorizationDbContext>(
     options => options.UseNpgsql(databaseConnectionString)
@@ -50,7 +38,10 @@ builder.Services.AddTransient<IPasswordRecoversService, PasswordRecoversService>
 builder.Services.Configure<MailSenderSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<IMailSenderService, MailSenderService>();
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(config =>
+{
+    config.SwaggerDoc("v1", new OpenApiInfo() { Title = "Auth API", Version = "v1" });
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 
@@ -84,11 +75,17 @@ builder.Services.Configure<CryptographyServiceSettings>(
 builder.Services.AddTransient<ICryptographyService, CryptographyService>();
 
 builder.Services.Configure<MailBodyBuilderSettings>(
-    builder.Configuration.GetSection(mailBodyBuilderSettingsSection)
+    (settings) => settings.VerificationLink = mailVerificationLink
 );
+
 builder.Services.Configure<RedirectionSettings>(
-    builder.Configuration.GetSection(redirectionSettingsSection)
+    (settings) =>
+    {
+        settings.RoomManagerApiPath = roomManagerApiPath;
+        settings.StatisticServiceApiPath = statisticServiceApiPath;
+    }
 );
+
 builder.Services.AddTransient<IMailBodyBuilder, MailBodyBuilderService>();
 
 builder.Services.AddRazorPages();
@@ -112,13 +109,7 @@ _ = app.MapControllers();
 _ = app.MapRazorPages();
 
 IDbInitializeService initService = app.Services.GetRequiredService<IDbInitializeService>();
-if (app.Environment.EnvironmentName is "DockerDevelopment" or "DesktopDevelopment")
-{
-    initService.InitializeDb();
-}
-else if (app.Environment.EnvironmentName is "Production")
-{
-    initService.MigrateDb();
-}
+
+initService.InitializeDb();
 
 app.Run();

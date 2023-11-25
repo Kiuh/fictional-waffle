@@ -6,6 +6,8 @@
         public string Title { get; set; } = "Internal Server Error";
         public List<string> Labels { get; set; } = new();
 
+        public ErrorPageDto() { }
+
         public ErrorPageDto(string label)
         {
             Labels.Add(label);

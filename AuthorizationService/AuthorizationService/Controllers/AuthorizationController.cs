@@ -107,7 +107,7 @@ public sealed class AuthorizationController : ControllerBase
         {
             return RedirectToPage("/AlreadyVerified");
         }
-        if (jwtTokenToolsService.ValidateToken(JwtToken))
+        if (!jwtTokenToolsService.ValidateToken(JwtToken, out _))
         {
             return RedirectToPage(
                 "/ErrorPage",

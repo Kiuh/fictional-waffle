@@ -10,7 +10,7 @@ namespace Networking
         public IEnumerator GetAllPlayerStatistic(Action<UnityWebRequest> action)
         {
             UnityWebRequest webRequest = requestBuilder.CreateRequest(
-                "/Statistic",
+                "/Redirect/Statistic",
                 HttpMethod.Get,
                 jwt: JWTTokenMode.Enable
             );
@@ -24,7 +24,7 @@ namespace Networking
         public IEnumerator SendPlayerStatistic(PlayerStatisticDto playerStatistic)
         {
             UnityWebRequest webRequest = requestBuilder.CreateRequest(
-                "/Statistic",
+                "/Redirect/Statistic",
                 HttpMethod.Put,
                 content: playerStatistic,
                 jwt: JWTTokenMode.Enable

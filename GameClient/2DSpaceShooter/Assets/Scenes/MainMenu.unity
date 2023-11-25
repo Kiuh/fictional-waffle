@@ -2559,7 +2559,6 @@ GameObject:
   - component: {fileID: 1123120274}
   - component: {fileID: 1123120273}
   - component: {fileID: 1123120272}
-  - component: {fileID: 1123120271}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -2567,24 +2566,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &1123120271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1123120270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1752e671289c89043aeed11a915956f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  close: {fileID: 323002411}
-  email: {fileID: 0}
-  send: {fileID: 0}
-  login: {fileID: 0}
-  successForgotPassManager: {fileID: 0}
-  error: {fileID: 0}
 --- !u!114 &1123120272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3687,7 +3668,7 @@ MonoBehaviour:
   refreshButton: {fileID: 1519589615}
   roomCellPrefab: {fileID: 3536858116020437240, guid: 1b99664fef042bb4980e41bf197dfb5e,
     type: 3}
-  errorLabel: {fileID: 0}
+  errorLabel: {fileID: 1509430648}
 --- !u!1 &1739795814
 GameObject:
   m_ObjectHideFlags: 0

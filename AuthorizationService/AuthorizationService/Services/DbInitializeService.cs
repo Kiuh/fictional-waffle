@@ -1,4 +1,5 @@
 ﻿using AuthorizationApi.Database;
+using AuthorizationApi.Database.Models;
 
 namespace AuthorizationService.Services;
 
@@ -21,6 +22,20 @@ public class DbInitializeService : IDbInitializeService
     {
         _ = authorizationDbContext.Database.EnsureDeleted();
         _ = authorizationDbContext.Database.EnsureCreated();
+        List<User> list =
+            new()
+            {
+                new()
+                {
+                    Login = "Login1",
+                    RegistrationDate = DateTime.Now,
+                    Email = "Login1@email.com",
+                    EmailVerification = EmailVerificationState.Verified,
+                    HashedPassword = "TODO: HashedPassword"
+                }
+            };
+
+        authorizationDbContext.Users.AddRange(list);
     }
 
     public void MigrateDb()

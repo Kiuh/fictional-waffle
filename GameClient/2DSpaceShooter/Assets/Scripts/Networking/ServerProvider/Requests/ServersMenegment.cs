@@ -9,7 +9,7 @@ namespace Networking
         public IEnumerator GetAllAvailableRooms(Action<UnityWebRequest> action)
         {
             UnityWebRequest webRequest = requestBuilder.CreateRequest(
-                "/Rooms",
+                "/Redirect/Rooms",
                 HttpMethod.Get,
                 jwt: JWTTokenMode.Enable
             );
@@ -26,7 +26,7 @@ namespace Networking
         )
         {
             UnityWebRequest webRequest = requestBuilder.CreateRequest(
-                $"/Rooms/{containerName}",
+                $"/Redirect/Rooms/{containerName}",
                 HttpMethod.Get,
                 jwt: JWTTokenMode.Enable
             );

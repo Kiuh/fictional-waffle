@@ -1,4 +1,5 @@
-﻿using AuthorizationApi.Database.Models;
+﻿using AuthorizationApi.Database;
+using AuthorizationApi.Database.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -41,21 +42,24 @@ public interface IJwtTokenToolsService
     public string GenerateToken(string actor, TimeSpan duration);
     public void SetLoginJwtTokenHeader(User user, IHeaderDictionary header);
     public EmailVerification CreateEmailVerification(User user);
-    public bool ValidateToken(string token);
+    public bool ValidateToken(string token, out User? user);
 }
 
 public class JwtTokenToolsService : IJwtTokenToolsService
 {
     private readonly JwtTokenToolsSettings tokenSettings;
     private readonly TokensLifeTimeSettings tokensLifeTimeSettings;
+    private readonly AuthorizationDbContext authorizationDbContext;
 
     public JwtTokenToolsService(
         IOptions<JwtTokenToolsSettings> tokenSettings,
-        IOptions<TokensLifeTimeSettings> tokensLifeTimeSettings
+        IOptions<TokensLifeTimeSettings> tokensLifeTimeSettings,
+        AuthorizationDbContext dbContext
     )
     {
         this.tokenSettings = tokenSettings.Value;
         this.tokensLifeTimeSettings = tokensLifeTimeSettings.Value;
+        authorizationDbContext = dbContext;
     }
 
     public EmailVerification CreateEmailVerification(User user)
@@ -96,17 +100,18 @@ public class JwtTokenToolsService : IJwtTokenToolsService
         );
     }
 
-    public bool ValidateToken(string token)
+    public bool ValidateToken(string token, out User? user)
     {
         if (token == null)
         {
+            user = null;
             return false;
         }
 
         JwtSecurityTokenHandler tokenHandler = new();
         try
         {
-            _ = tokenHandler.ValidateToken(
+            ClaimsPrincipal calms = tokenHandler.ValidateToken(
                 token,
                 new TokenValidationParameters
                 {
@@ -120,10 +125,13 @@ public class JwtTokenToolsService : IJwtTokenToolsService
                 },
                 out _
             );
+            string userLogin = calms.Claims.First(x => x.Type == ClaimTypes.Actor).Value;
+            user = authorizationDbContext.Users.ToList().Find(user => user.Login == userLogin);
             return true;
         }
         catch
         {
+            user = null;
             return false;
         }
     }

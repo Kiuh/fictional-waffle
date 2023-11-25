@@ -8,7 +8,7 @@ public static class LoggerTools
     {
         IPAddress[] ips = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
         IEnumerable<string> stringIps = ips.Select(x => x.ToString());
-        return "[ " + stringIps.Aggregate("-->", (x, y) => x + " " + y) + " ]";
+        return "[ <--> ]";
     }
 
     public static void LogDefaultInfo(this ILogger logger, HttpRequest httpRequest)

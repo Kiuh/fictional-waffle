@@ -33,7 +33,14 @@ public class ErrorHandlingMiddleware
             HttpResponse response = context.Response;
             response.ContentType = "application/json";
             response.StatusCode = 500;
-            ErrorBody errorBody = new(response.StatusCode + ": Unknown internal error.");
+            ErrorBody errorBody =
+                new(
+                    response.StatusCode
+                        + "-Internal Error: "
+                        + ex.Message
+                        + "\nTrace:\n"
+                        + ex.StackTrace
+                );
             if (ex is ApiException apiEx)
             {
                 response.StatusCode = apiEx.StatusCode;

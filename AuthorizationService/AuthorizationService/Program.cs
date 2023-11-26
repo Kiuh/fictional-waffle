@@ -96,11 +96,8 @@ WebApplication app = builder.Build();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
-if (app.Environment.EnvironmentName is "DesktopDevelopment")
-{
-    _ = app.UseSwagger();
-    _ = app.UseSwaggerUI();
-}
+_ = app.UseSwagger();
+_ = app.UseSwaggerUI();
 
 _ = app.UseAuthentication();
 _ = app.UseAuthorization();

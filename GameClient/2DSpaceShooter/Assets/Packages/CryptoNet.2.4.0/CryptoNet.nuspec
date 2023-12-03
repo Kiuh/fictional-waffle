@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata minClientVersion="1.0.0">
+    <id>CryptoNet</id>
+    <version>2.4.0</version>
+    <title>CryptoNet</title>
+    <authors>Maytham Fahmi</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>CryptoNetLogo-icon.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/maythamfahmi/CryptoNet</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/maythamfahmi/CryptoNet/main/img/CryptoNetLogo-icon.png</iconUrl>
+    <description>Simple and lightweight content encryption and decryption package.</description>
+    <copyright>Copyright © 2020</copyright>
+    <tags>Encryption Decryption Security Cryptography Asymmetric X509 RSA AES</tags>
+    <repository type="git" url="https://github.com/maythamfahmi/CryptoNet" commit="c926c6f7a1fcc647d02948d5e4e04bff3bd5de36" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+    <contentFiles>
+      <files include="any/netstandard2.0/CryptoNetLogo-icon.ico" buildAction="Content" />
+    </contentFiles>
+  </metadata>
+</package>

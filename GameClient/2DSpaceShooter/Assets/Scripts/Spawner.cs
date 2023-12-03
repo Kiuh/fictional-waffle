@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 public class ObstaclesHolder
@@ -39,7 +38,7 @@ public class Spawner : MonoBehaviour
     private void Awake()
     {
         TextAsset file = Resources.Load("Map") as TextAsset;
-        ObstaclesHolder list = JsonConvert.DeserializeObject<ObstaclesHolder>(file.text);
+        ObstaclesHolder list = JsonUtility.FromJson<ObstaclesHolder>(file.text);
         obstacles = list.Obstacles;
     }
 

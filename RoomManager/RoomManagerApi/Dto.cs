@@ -33,6 +33,6 @@
 
     public class RoomInfosDto
     {
-        public required List<RoomInfoDto> RoomsDtoList;
+        public required List<RoomInfoDto> RoomsDtoList { get; set; }
     }
 }

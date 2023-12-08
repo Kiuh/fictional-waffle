@@ -14,12 +14,12 @@ services:
       DATABASE_HOST: authorization_postgres_db
       ROOM_MANAGER_IP_ADDRESS: "room_manager:5437"
       STATISTIC_SERVICE_IP_ADDRESS: "statistic_service:5438"
-      MAIL_VERIFICATION_IP_ADDRESS: "localhost:80"
+      MAIL_VERIFICATION_IP_ADDRESS: "localhost:5000"
     ports:
       - 5000:80
     volumes:
       - ./AuthorizationService/.aspnet/https:/https:ro
-      - ./AuthorizationService/Mails:/app/Mails
+      - ./AuthorizationService/AuthorizationService/Mails:/app/Mails
       - ./AuthorizationService:/root/.microsoft/usersecrets/36c29860-ecc0-445b-b7aa-109d90c26842
     depends_on:
       - authorization_postgres_db

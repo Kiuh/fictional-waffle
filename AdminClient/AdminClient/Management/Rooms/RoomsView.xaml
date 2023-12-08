@@ -4,7 +4,12 @@
              x:Class="AdminClient.Management.Rooms.RoomsView"
              Title="Rooms">
     <Grid>
-        <StackLayout VerticalOptions="Start" BindableLayout.ItemsSource="{Binding Rooms}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackLayout BindableLayout.ItemsSource="{Binding Rooms}" Grid.Row="1">
             <BindableLayout.ItemTemplate>
                 <DataTemplate>
                     <Frame Margin="10" BorderColor="{StaticResource Secondary}">
@@ -40,13 +45,13 @@
             </BindableLayout.ItemTemplate>
         </StackLayout>
 
-        <Grid VerticalOptions="End">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <HorizontalStackLayout VerticalOptions="End" Padding="10">
+            <HorizontalStackLayout>
                 <Entry Placeholder="name" Margin="10, 0" Text="{Binding NewRoomName}"/>
                 <Entry Placeholder="container name" Margin="10, 0" Text="{Binding NewContainerName}"/>
                 <Entry Placeholder="capacity" Margin="10, 0" Text="{Binding NewRoomCapacity}"/>
@@ -54,7 +59,7 @@
                 <Button Text="deploy" Command="{Binding DeployRoomCommand}"/>
             </HorizontalStackLayout>
 
-            <Button Text="refresh" Grid.Column="1" HorizontalOptions="End" Margin="10" Command="{Binding RefreshCommand}"/>
+            <Button Text="refresh" Grid.Column="1" Command="{Binding RefreshCommand}"/>
         </Grid>
     </Grid>
 </ContentPage>

@@ -14,7 +14,7 @@ namespace RoomManager
 
         private static string DOCKER_HOST = "http://127.0.0.1";
         private static string DOCKER_DAEMON_URI = "tcp://127.0.0.1:2375";
-        private static string IMAGE_NAME = "fictional-waffle-authorization:latest";
+        private static string IMAGE_NAME = "game-server:latest";
 
         private static readonly DockerClient client;
 
@@ -42,12 +42,43 @@ namespace RoomManager
         {
             try
             {
+                var tcp_port = Random.Shared.Next() % 4000 + 60_000;
+                var udp_port = Random.Shared.Next() % 4000 + 30_000;
+
                 string id = client.Containers
                     .CreateContainerAsync(
                         new CreateContainerParameters()
                         {
                             Image = IMAGE_NAME,
                             Name = containerName,
+                            Env = new List<string>() { "arguments=\"7878 9999 4 ServerName\"" },
+                            HostConfig = new HostConfig
+                            {
+                                PortBindings = new Dictionary<string, IList<PortBinding>>
+                                {
+                                    {
+                                        "7878/udp",
+                                        new List<PortBinding>
+                                        {
+                                            new PortBinding
+                                            {
+                                                HostPort = udp_port.ToString()
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "9999/tcp",
+                                        new List<PortBinding>
+                                        {
+                                            new PortBinding
+                                            {
+                                                HostPort = tcp_port.ToString()
+                                            }
+                                        }
+                                    }
+                                }, 
+                                NetworkMode = "host"
+                            }
                         }
                     )
                     .Result.ID;
@@ -89,7 +120,7 @@ namespace RoomManager
             }
 
             AggregateException? exception = client.Containers
-                .RemoveContainerAsync(id, new ContainerRemoveParameters())
+                .RemoveContainerAsync(id, new ContainerRemoveParameters() { Force = true })
                 .Exception;
             return exception == null;
         }
@@ -97,25 +128,29 @@ namespace RoomManager
         public static List<ContainerInfo> GetContainersInfo()
         {
             IList<ContainerListResponse> containers = client.Containers
-                .ListContainersAsync(new ContainersListParameters())
+                .ListContainersAsync(new ContainersListParameters() { All = true })
                 .Result;
             List<ContainerInfo> infos = new();
             foreach (ContainerListResponse? container in containers)
             {
-                IList<Port> ports = container.Ports;
-
-                Port? port = ports.FirstOrDefault(p => p.PublicPort != 0 && p.PublicPort > 50000);
-                if (port == null)
+                if(container.Image != "game-server:latest")
                 {
                     continue;
                 }
+                
+                //IList<Port> ports = container.Ports;
+                //Port? port = ports.FirstOrDefault(p => p.PublicPort != 0 && p.PublicPort > 50000);
+                //if (port == null)
+                //{
+                //    continue;
+                //}
 
                 ContainerInfo info =
                     new()
                     {
                         DeployedAt = container.Created,
                         Name = container.Names[0],
-                        Uri = new Uri(DOCKER_HOST + ":" + port.PublicPort),
+                        Uri = new Uri("http://localhost:60000"),
                     };
 
                 infos.Add(info);

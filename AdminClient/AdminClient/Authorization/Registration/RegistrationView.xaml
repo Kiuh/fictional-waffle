@@ -15,7 +15,7 @@
             <Entry Placeholder="login" HorizontalTextAlignment="Center" Text="{Binding Login}"></Entry>
             <Entry Placeholder="email" HorizontalTextAlignment="Center" Text="{Binding Email}"></Entry>
             <Entry Placeholder="password" HorizontalTextAlignment="Center" IsPassword="True" Text="{Binding Password}"></Entry>
-            <Button Text="register" Command="{Binding PerformLoginCommand}"></Button>
+            <Button Text="register" Command="{Binding Register}"></Button>
         </VerticalStackLayout>
     </Grid>
 </ContentPage>

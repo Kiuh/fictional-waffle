@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RoomManagerApi;
+using System.Text.Json;
 
 namespace RoomManager
 {
@@ -60,7 +62,7 @@ namespace RoomManager
             };
         }
 
-        private static RoomInfosDto GetRooms()
+        private static string GetRooms()
         {
             List<DockerNetworkClient.ContainerInfo> containers =
                 DockerNetworkClient.GetContainersInfo();
@@ -86,7 +88,8 @@ namespace RoomManager
             }
 
             RoomInfosDto ret = new() { RoomsDtoList = rooms };
-            return ret;
+            var res = JsonConvert.SerializeObject(ret);
+            return res;
         }
     }
 }

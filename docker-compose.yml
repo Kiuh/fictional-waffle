@@ -97,9 +97,11 @@ services:
       dockerfile: Dockerfile
     environment:
       DOCKER_HOST: http://127.0.0.1
-      DOCKER_DAEMON_URI: tcp://localhost:2375
-      IMAGE_NAME: fictional-waffle-authorization:latest
+      DOCKER_DAEMON_URI: tcp://host.docker.internal:2375
+      IMAGE_NAME: game-server:latest
     command: -p 5437
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
     ports:
       - 5015:8080
 

@@ -45,6 +45,7 @@ namespace AdminClient.Management.Rooms
         {
             Instance = this;
 
+            Rooms.Clear();
             var rooms = RoomManagerClient.GetRooms();
             if(rooms != null)
             {
@@ -75,7 +76,7 @@ namespace AdminClient.Management.Rooms
 
         public async void DropRoom(Room room)
         {
-            _ = RoomManagerClient.DropRoom(room.ContainerName);
+            _ = RoomManagerClient.DropRoom(room.ContainerName.Substring(1));
             _ = rooms.Remove(room);
         }
     }

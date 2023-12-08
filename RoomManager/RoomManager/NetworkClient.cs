@@ -4,21 +4,24 @@ namespace RoomManager
 {
     internal static class NetworkClient
     {
-        private static readonly HttpClient client;
+        //private static readonly HttpClient client;
 
         static NetworkClient()
         {
-            client = new HttpClient { BaseAddress = new Uri("") };
+           
         }
 
         public static RoomPartialInfoDto? TryGetRoomPartialInfo(Uri room)
         {
+            return new RoomPartialInfoDto() { ActiveUsers = 10, Capacity = 10, Name = "Name" };
+
             Uri uri = new(room, "Info");
+            var client = new HttpClient { BaseAddress = uri };
 
             HttpResponseMessage? res;
             try
             {
-                res = client.GetAsync(uri).Result;
+                res = client.GetAsync("").Result;
             }
             catch (Exception)
             {

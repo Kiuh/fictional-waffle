@@ -1,4 +1,5 @@
-﻿using RoomManagerApi;
+﻿using Newtonsoft.Json;
+using RoomManagerApi;
 using System.Net.Http.Json;
 
 namespace AdminClient
@@ -15,7 +16,8 @@ namespace AdminClient
         public static List<RoomInfoDto> GetRooms()
         {
             HttpResponseMessage res = client.GetAsync("/Rooms").Result;
-            return res.Content.ReadFromJsonAsync<RoomInfosDto>().Result.RoomsDtoList;
+            var ress = res.Content.ReadAsStringAsync().Result;
+            return JsonConvert.DeserializeObject<RoomInfosDto>(ress).RoomsDtoList;
         }
 
         public static async Task<bool> DeployRoom(string containerName, int capacity, string name)

@@ -35,8 +35,10 @@ namespace Networking
             UnityWebRequest request =
                 new(baseURI + path, method.StringValue())
                 {
-                    downloadHandler = new DownloadHandlerBuffer()
+                    downloadHandler = new DownloadHandlerBuffer(),
+                    certificateHandler = new AcceptAllCertificatesSignedWithASpecificKeyPublicKey()
                 };
+
             request.SetRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
             if (content != null)

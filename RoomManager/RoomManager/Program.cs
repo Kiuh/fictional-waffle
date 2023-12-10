@@ -37,18 +37,13 @@ namespace RoomManager
             {
                 if (container.Name == "/" + containerName)
                 {
-                    RoomPartialInfoDto? additional_info = NetworkClient.TryGetRoomPartialInfo(
-                        container.Uri
-                    );
-                    _ = additional_info.Capacity <= additional_info.ActiveUsers;
-
-                    string[] s = container.Uri.ToString().Split(':');
-                    _ = ushort.TryParse(s[2], out ushort port);
+                    _ = NetworkClient.TryGetRoomPartialInfo(container.Uri);
                     ServerConnectionData rett =
                         new()
                         {
-                            Ipv4Address = s[0] + ":" + s[1],
-                            Port = port,
+                            Ipv4Address =
+                                Environment.GetEnvironmentVariable("SERVER_ADRESS") ?? "localhost",
+                            Port = (ushort)container.Uri.Port,
                             IsFull = false
                         };
                     string retts = JsonConvert.SerializeObject(rett);

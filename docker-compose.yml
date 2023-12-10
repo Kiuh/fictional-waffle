@@ -101,6 +101,7 @@ services:
       DOCKER_HOST: http://127.0.0.1
       DOCKER_DAEMON_URI: tcp://localhost:2375
       IMAGE_NAME: game-server:latest
+      SERVER_ADRESS: "185.6.25.154"
     network_mode: "host"
 
 volumes:

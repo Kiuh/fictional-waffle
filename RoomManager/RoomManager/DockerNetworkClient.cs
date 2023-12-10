@@ -136,19 +136,19 @@ namespace RoomManager
                     continue;
                 }
 
-                //IList<Port> ports = container.Ports;
-                //Port? port = ports.FirstOrDefault(p => p.PublicPort != 0 && p.PublicPort > 50000);
-                //if (port == null)
-                //{
-                //    continue;
-                //}
+                IList<Port> ports = container.Ports;
+                Port? port = ports.FirstOrDefault(p => p.PublicPort is > 30_000 and < 34_000);
+                if (port == null)
+                {
+                    continue;
+                }
 
                 ContainerInfo info =
                     new()
                     {
                         DeployedAt = container.Created,
                         Name = container.Names[0],
-                        Uri = new Uri("http://localhost:60000"),
+                        Uri = new Uri($"http://localhost:{port.PublicPort}"),
                     };
 
                 infos.Add(info);

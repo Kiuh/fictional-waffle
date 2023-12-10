@@ -87,7 +87,8 @@ public class EndpointController : Controller
             HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(
                 httpRequestMessage
             );
-
+            logger.LogInformation(httpResponseMessage.ToString());
+            logger.LogInformation("STATUS: " + httpResponseMessage.StatusCode.ToString());
             return Ok(httpResponseMessage.Content.ReadAsStream());
         }
         else

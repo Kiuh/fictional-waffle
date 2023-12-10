@@ -44,7 +44,7 @@ public class ServerManager : MonoBehaviour
         List<string> arguments = Environment
             .GetCommandLineArgs()
             .Skip(1)
-            .Select(x => x.Trim(','))
+            .Select(x => x.Trim(',').Replace("\"", ""))
             .ToList();
         const int args_count = 4;
         if (arguments.Count < args_count || arguments.Count > args_count)

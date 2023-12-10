@@ -57,7 +57,7 @@ public class EndpointController : Controller
                 case string str when str.StartsWith("/Rooms"):
                     httpRequestMessage = new(
                         HttpMethod.Get,
-                        redirectionSettings.RoomManagerApiPath + str
+                        redirectionSettings.RoomManagerApiPath + str.Replace("/Rooms", "/Room")
                     );
                     break;
                 case "/Statistic" when Request.Method == HttpMethod.Get.Method:

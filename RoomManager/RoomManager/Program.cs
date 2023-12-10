@@ -40,16 +40,16 @@ namespace RoomManager
                     RoomPartialInfoDto? additional_info = NetworkClient.TryGetRoomPartialInfo(
                         container.Uri
                     );
-                    bool full = additional_info.Capacity <= additional_info.ActiveUsers;
+                    _ = additional_info.Capacity <= additional_info.ActiveUsers;
 
                     string[] s = container.Uri.ToString().Split(':');
-                    _ = ushort.TryParse(s[1], out ushort port);
+                    _ = ushort.TryParse(s[2], out ushort port);
                     ServerConnectionData rett =
                         new()
                         {
-                            Ipv4Address = s[0],
+                            Ipv4Address = s[0] + ":" + s[1],
                             Port = port,
-                            IsFull = full
+                            IsFull = false
                         };
                     string retts = JsonConvert.SerializeObject(rett);
                     return retts;

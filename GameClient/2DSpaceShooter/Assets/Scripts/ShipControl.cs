@@ -1,5 +1,4 @@
 ﻿using NetScripts;
-using System;
 using System.Linq;
 using Unity.Collections;
 using Unity.Netcode;
@@ -108,14 +107,14 @@ public class ShipControl : NetworkBehaviour
     private float m_Spin;
     private Rigidbody2D m_Rigidbody2D;
 
-    private NetworkVariable<string> uniqueId = new("");
-    public string UniqueId => uniqueId.Value;
+    private NetworkVariable<int> uniqueId = new(0);
+    public int UniqueId => uniqueId.Value;
 
     private void Awake()
     {
         if (IsServer)
         {
-            uniqueId.Value = Guid.NewGuid().ToString();
+            uniqueId.Value = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
         }
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_ObjectPool = GameObject.FindWithTag(s_ObjectPoolTag).GetComponent<NetworkObjectPool>();
@@ -179,7 +178,7 @@ public class ShipControl : NetworkBehaviour
         SetHealthBarValue(newValue);
     }
 
-    public void TakeDamage(int amount, string source)
+    public void TakeDamage(int amount, int source)
     {
         Health.Value -= amount;
         m_FrictionEffectStartTimer.Value = NetworkManager.LocalTime.TimeAsFloat;
@@ -201,7 +200,7 @@ public class ShipControl : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void SendDeathStatisticClientRpc(string uniqueId)
+    private void SendDeathStatisticClientRpc(int uniqueId)
     {
         if (IsLocalPlayer)
         {
@@ -525,7 +524,7 @@ public class ShipControl : NetworkBehaviour
         Asteroid asteroid = other.gameObject.GetComponent<Asteroid>();
         if (asteroid != null)
         {
-            TakeDamage(5, null);
+            TakeDamage(5, int.MinValue);
         }
     }
 

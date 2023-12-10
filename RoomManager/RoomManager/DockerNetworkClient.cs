@@ -12,15 +12,15 @@ namespace RoomManager
             public Uri Uri;
         }
 
-        private static string DOCKER_HOST = "http://127.0.0.1";
-        private static string DOCKER_DAEMON_URI = "tcp://127.0.0.1:2375";
-        private static string IMAGE_NAME = "game-server:latest";
+        private static readonly string DOCKER_HOST = "http://127.0.0.1";
+        private static readonly string DOCKER_DAEMON_URI = "tcp://127.0.0.1:2375";
+        private static readonly string IMAGE_NAME = "game-server:latest";
 
         private static readonly DockerClient client;
 
         static DockerNetworkClient()
         {
-            if(Environment.GetEnvironmentVariable("DOCKER_HOST") != null)
+            if (Environment.GetEnvironmentVariable("DOCKER_HOST") != null)
             {
                 DOCKER_HOST = Environment.GetEnvironmentVariable("DOCKER_HOST");
             }
@@ -42,8 +42,8 @@ namespace RoomManager
         {
             try
             {
-                var tcp_port = Random.Shared.Next() % 4000 + 60_000;
-                var udp_port = Random.Shared.Next() % 4000 + 30_000;
+                int tcp_port = (Random.Shared.Next() % 4000) + 60_000;
+                int udp_port = (Random.Shared.Next() % 4000) + 30_000;
 
                 string id = client.Containers
                     .CreateContainerAsync(
@@ -60,24 +60,17 @@ namespace RoomManager
                                         "7878/udp",
                                         new List<PortBinding>
                                         {
-                                            new PortBinding
-                                            {
-                                                HostPort = udp_port.ToString()
-                                            }
+                                            new() { HostPort = udp_port.ToString() }
                                         }
                                     },
                                     {
                                         "9999/tcp",
                                         new List<PortBinding>
                                         {
-                                            new PortBinding
-                                            {
-                                                HostPort = tcp_port.ToString()
-                                            }
+                                            new() { HostPort = tcp_port.ToString() }
                                         }
                                     }
-                                }, 
-                                NetworkMode = "host"
+                                }
                             }
                         }
                     )
@@ -133,11 +126,11 @@ namespace RoomManager
             List<ContainerInfo> infos = new();
             foreach (ContainerListResponse? container in containers)
             {
-                if(container.Image != "game-server:latest")
+                if (container.Image != "game-server:latest")
                 {
                     continue;
                 }
-                
+
                 //IList<Port> ports = container.Ports;
                 //Port? port = ports.FirstOrDefault(p => p.PublicPort != 0 && p.PublicPort > 50000);
                 //if (port == null)

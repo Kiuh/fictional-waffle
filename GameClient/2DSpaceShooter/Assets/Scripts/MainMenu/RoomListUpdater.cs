@@ -46,6 +46,9 @@ namespace MainMenu
             LoadingPause.Instance.HideLoading();
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
+                string json = JsonUtility.ToJson(new RoomsList() { RoomsDtoList = new() });
+                Debug.Log(json);
+                Debug.Log(webRequest.downloadHandler.text);
                 RoomsList roomsList = JsonUtility.FromJson<RoomsList>(
                     webRequest.downloadHandler.text
                 );
@@ -66,11 +69,13 @@ namespace MainMenu
             }
         }
 
+        [Serializable]
         public class RoomsList
         {
             public List<RoomInfoDto> RoomsDtoList;
         }
 
+        [Serializable]
         public class RoomInfoDto
         {
             public string Name;
@@ -93,6 +98,7 @@ namespace MainMenu
             LoadingPause.Instance.HideLoading();
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
+                Debug.Log(webRequest.downloadHandler.text);
                 ServerConnectionData connectionData = JsonUtility.FromJson<ServerConnectionData>(
                     webRequest.downloadHandler.text
                 );
@@ -106,6 +112,7 @@ namespace MainMenu
             }
         }
 
+        [SerializeField]
         private class ServerConnectionData
         {
             public string Ipv4Address;

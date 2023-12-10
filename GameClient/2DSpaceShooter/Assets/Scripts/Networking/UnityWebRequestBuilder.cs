@@ -50,7 +50,7 @@ namespace Networking
 
             if (jwt == JWTTokenMode.Enable)
             {
-                request.SetRequestHeader("Authorization", "Bearer " + jwtToken);
+                request.SetRequestHeader("JwtToken", jwtToken);
             }
 
             return request;

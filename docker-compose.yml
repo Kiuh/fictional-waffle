@@ -1,4 +1,4 @@
-﻿version: "3.9"
+version: "3.9"
 
 services:
   authorization:
@@ -12,9 +12,11 @@ services:
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/authorizationpassword.pfx
       DATABASE_PORT: 5433
       DATABASE_HOST: authorization_postgres_db
-      ROOM_MANAGER_IP_ADDRESS: "room_manager:5437"
-      STATISTIC_SERVICE_IP_ADDRESS: "statistic_service:5438"
+      ROOM_MANAGER_IP_ADDRESS: "host.docker.internal:5015"
+      STATISTIC_SERVICE_IP_ADDRESS: "host.docker.internal:5005"
       MAIL_VERIFICATION_IP_ADDRESS: "185.6.25.154:5000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - 5000:80
     volumes:
@@ -99,7 +101,6 @@ services:
       DOCKER_HOST: http://127.0.0.1
       DOCKER_DAEMON_URI: tcp://localhost:2375
       IMAGE_NAME: game-server:latest
-    command: -p 5437
     network_mode: "host"
 
 volumes:

@@ -50,13 +50,16 @@ public class JwtTokenToolsService : IJwtTokenToolsService
     private readonly JwtTokenToolsSettings tokenSettings;
     private readonly TokensLifeTimeSettings tokensLifeTimeSettings;
     private readonly AuthorizationDbContext authorizationDbContext;
+    private readonly ILogger<JwtTokenToolsService> logger;
 
     public JwtTokenToolsService(
         IOptions<JwtTokenToolsSettings> tokenSettings,
         IOptions<TokensLifeTimeSettings> tokensLifeTimeSettings,
-        AuthorizationDbContext dbContext
+        AuthorizationDbContext dbContext,
+        ILogger<JwtTokenToolsService> logger
     )
     {
+        this.logger = logger;
         this.tokenSettings = tokenSettings.Value;
         this.tokensLifeTimeSettings = tokensLifeTimeSettings.Value;
         authorizationDbContext = dbContext;
@@ -104,6 +107,7 @@ public class JwtTokenToolsService : IJwtTokenToolsService
     {
         if (token == null)
         {
+            logger.LogInformation("Null token");
             user = null;
             return false;
         }
@@ -129,8 +133,9 @@ public class JwtTokenToolsService : IJwtTokenToolsService
             user = authorizationDbContext.Users.ToList().Find(user => user.Login == userLogin);
             return true;
         }
-        catch
+        catch (Exception ex)
         {
+            logger.LogInformation("Exception in validating: " + ex);
             user = null;
             return false;
         }

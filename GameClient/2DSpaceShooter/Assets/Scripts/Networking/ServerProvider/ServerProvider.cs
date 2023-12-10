@@ -29,7 +29,8 @@ namespace Networking
             {
                 Destroy(gameObject);
             }
-            requestBuilder = new("https://localhost:5000");
+            requestBuilder = new("https://185.6.25.154:5000");
+            //requestBuilder = new("https://localhost:5000");
             _ = StartCoroutine(GetPublicKey());
         }
 

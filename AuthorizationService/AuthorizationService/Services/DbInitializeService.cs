@@ -22,20 +22,17 @@ public class DbInitializeService : IDbInitializeService
     {
         _ = authorizationDbContext.Database.EnsureDeleted();
         _ = authorizationDbContext.Database.EnsureCreated();
-        List<User> list =
-            new()
+        _ = authorizationDbContext.Users.Add(
+            new User()
             {
-                new()
-                {
-                    Login = "Login1",
-                    RegistrationDate = DateTime.Now,
-                    Email = "Login1@email.com",
-                    EmailVerification = EmailVerificationState.Verified,
-                    HashedPassword = "TODO: HashedPassword"
-                }
-            };
-
-        authorizationDbContext.Users.AddRange(list);
+                Login = "login",
+                RegistrationDate = DateTime.Now,
+                Email = "kylturpro@gmail.com",
+                EmailVerification = EmailVerificationState.Verified,
+                HashedPassword = "428821350e9691491f616b754cd8315fb86d797ab35d843479e732ef90665324"
+            }
+        );
+        _ = authorizationDbContext.SaveChanges();
     }
 
     public void MigrateDb()

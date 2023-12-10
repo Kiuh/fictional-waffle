@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RoomManagerApi;
-using System.Text.Json;
 
 namespace RoomManager
 {
@@ -30,13 +29,13 @@ namespace RoomManager
             return DockerNetworkClient.TryUndeployContainer(containerName);
         }
 
-        private static ServerConnectionData GetServerConnectionData(string containerName)
+        private static string GetServerConnectionData(string containerName)
         {
             List<DockerNetworkClient.ContainerInfo> containers =
                 DockerNetworkClient.GetContainersInfo();
             foreach (DockerNetworkClient.ContainerInfo container in containers)
             {
-                if (container.Name == containerName)
+                if (container.Name == "/" + containerName)
                 {
                     RoomPartialInfoDto? additional_info = NetworkClient.TryGetRoomPartialInfo(
                         container.Uri
@@ -45,21 +44,27 @@ namespace RoomManager
 
                     string[] s = container.Uri.ToString().Split(':');
                     _ = ushort.TryParse(s[1], out ushort port);
-                    return new ServerConnectionData()
-                    {
-                        Ipv4Address = s[0],
-                        Port = port,
-                        IsFull = full
-                    };
+                    ServerConnectionData rett =
+                        new()
+                        {
+                            Ipv4Address = s[0],
+                            Port = port,
+                            IsFull = full
+                        };
+                    string retts = JsonConvert.SerializeObject(rett);
+                    return retts;
                 }
             }
 
-            return new ServerConnectionData()
-            {
-                Ipv4Address = "",
-                Port = 0,
-                IsFull = true
-            };
+            ServerConnectionData ret =
+                new()
+                {
+                    Ipv4Address = "",
+                    Port = 0,
+                    IsFull = true
+                };
+            string res = JsonConvert.SerializeObject(ret);
+            return res;
         }
 
         private static string GetRooms()
@@ -88,7 +93,7 @@ namespace RoomManager
             }
 
             RoomInfosDto ret = new() { RoomsDtoList = rooms };
-            var res = JsonConvert.SerializeObject(ret);
+            string res = JsonConvert.SerializeObject(ret);
             return res;
         }
     }

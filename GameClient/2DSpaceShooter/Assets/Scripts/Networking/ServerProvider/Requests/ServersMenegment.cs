@@ -25,6 +25,7 @@ namespace Networking
             string containerName
         )
         {
+            containerName = containerName.Replace("/", "");
             UnityWebRequest webRequest = requestBuilder.CreateRequest(
                 $"/Redirect/Rooms/{containerName}",
                 HttpMethod.Get,

@@ -23,7 +23,7 @@ namespace AdminClient
 
         static StatsClient()
         {
-            client = new HttpClient { BaseAddress = new Uri("http://127.0.0.1:5005") };
+            client = new HttpClient { BaseAddress = new Uri("http://185.6.25.154:5005") };
         }
 
         public static List<PlayerStatisticDto> GetPlayerStats()

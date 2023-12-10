@@ -71,6 +71,11 @@ namespace RoomManager
                                         }
                                     }
                                 }
+                            },
+                            ExposedPorts = new Dictionary<string, EmptyStruct>()
+                            {
+                                { "7878/udp", new EmptyStruct() },
+                                { "9999/tcp", new EmptyStruct() }
                             }
                         }
                     )

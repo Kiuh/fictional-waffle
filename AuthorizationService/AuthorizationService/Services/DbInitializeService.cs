@@ -26,7 +26,7 @@ public class DbInitializeService : IDbInitializeService
             new User()
             {
                 Login = "login",
-                RegistrationDate = DateTime.Now,
+                RegistrationDate = DateTime.UtcNow,
                 Email = "kylturpro@gmail.com",
                 EmailVerification = EmailVerificationState.Verified,
                 HashedPassword = "428821350e9691491f616b754cd8315fb86d797ab35d843479e732ef90665324"

@@ -14,7 +14,7 @@ services:
       DATABASE_HOST: authorization_postgres_db
       ROOM_MANAGER_IP_ADDRESS: "room_manager:5437"
       STATISTIC_SERVICE_IP_ADDRESS: "statistic_service:5438"
-      MAIL_VERIFICATION_IP_ADDRESS: "localhost:5000"
+      MAIL_VERIFICATION_IP_ADDRESS: "185.6.25.154:5000"
     ports:
       - 5000:80
     volumes:
@@ -97,13 +97,10 @@ services:
       dockerfile: Dockerfile
     environment:
       DOCKER_HOST: http://127.0.0.1
-      DOCKER_DAEMON_URI: tcp://host.docker.internal:2375
+      DOCKER_DAEMON_URI: tcp://localhost:2375
       IMAGE_NAME: game-server:latest
     command: -p 5437
-    extra_hosts:
-    - "host.docker.internal:host-gateway"
-    ports:
-      - 5015:8080
+    network_mode: "host"
 
 volumes:
   admin-authorization-data:

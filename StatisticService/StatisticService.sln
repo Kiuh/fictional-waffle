@@ -5,7 +5,9 @@ VisualStudioVersion = 17.9.34310.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatisticService", "StatisticService\StatisticService.csproj", "{BFE03FEB-BD9E-4C11-B3D1-CAE766FFB8DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticServiceApi", "StatisticServiceApi\StatisticServiceApi.csproj", "{C18ECEC4-B1D5-4694-8784-10ABBA8F33A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatisticServiceApi", "StatisticServiceApi\StatisticServiceApi.csproj", "{C18ECEC4-B1D5-4694-8784-10ABBA8F33A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{7BBC9E11-B7E9-4008-A028-F82DFD97113C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C18ECEC4-B1D5-4694-8784-10ABBA8F33A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C18ECEC4-B1D5-4694-8784-10ABBA8F33A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C18ECEC4-B1D5-4694-8784-10ABBA8F33A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BBC9E11-B7E9-4008-A028-F82DFD97113C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BBC9E11-B7E9-4008-A028-F82DFD97113C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BBC9E11-B7E9-4008-A028-F82DFD97113C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BBC9E11-B7E9-4008-A028-F82DFD97113C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

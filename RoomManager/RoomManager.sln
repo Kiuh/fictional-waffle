@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomManager", "RoomManager\RoomManager.csproj", "{625613BC-B376-402E-9B80-0DB040CB2724}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoomManager", "RoomManager\RoomManager.csproj", "{625613BC-B376-402E-9B80-0DB040CB2724}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomManagerApi", "RoomManagerApi\RoomManagerApi.csproj", "{CB48CAD2-6002-4A47-BE0D-36482C2D27BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoomManagerApi", "RoomManagerApi\RoomManagerApi.csproj", "{CB48CAD2-6002-4A47-BE0D-36482C2D27BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomManagerTests", "RoomManagerTests\RoomManagerTests.csproj", "{B6F0E7DA-37DB-4424-AD3B-50B30FAED21C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{CB48CAD2-6002-4A47-BE0D-36482C2D27BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB48CAD2-6002-4A47-BE0D-36482C2D27BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB48CAD2-6002-4A47-BE0D-36482C2D27BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6F0E7DA-37DB-4424-AD3B-50B30FAED21C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6F0E7DA-37DB-4424-AD3B-50B30FAED21C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6F0E7DA-37DB-4424-AD3B-50B30FAED21C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6F0E7DA-37DB-4424-AD3B-50B30FAED21C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

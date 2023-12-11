@@ -3,7 +3,7 @@ using Docker.DotNet.Models;
 
 namespace RoomManager
 {
-    internal static class DockerNetworkClient
+    public static class DockerNetworkClient
     {
         public struct ContainerInfo
         {
@@ -38,12 +38,22 @@ namespace RoomManager
             client = new DockerClientConfiguration(new Uri(DOCKER_DAEMON_URI)).CreateClient();
         }
 
+        public static int GetUdpPort()
+        {
+            return (Random.Shared.Next() % 4000) + 30_000;
+        }
+
+        public static int GetTcpPort()
+        {
+            return (Random.Shared.Next() % 4000) + 60_000;
+        }
+
         public static bool TryDeployContainer(string containerName)
         {
             try
             {
-                int tcp_port = (Random.Shared.Next() % 4000) + 60_000;
-                int udp_port = (Random.Shared.Next() % 4000) + 30_000;
+                int tcp_port = GetTcpPort();
+                int udp_port = GetUdpPort();
 
                 string id = client.Containers
                     .CreateContainerAsync(
